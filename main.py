@@ -5,7 +5,7 @@ import time
 
 perigee = 200 * 10**3   # Altitude du périgée [m]
 apogee = 600 * 10**3    # Altitude de l'apogée [m]
-inclinaison = 0         # Inclinaison de l'orbite [°]
+inclinaison = 0        # Inclinaison de l'orbite [°]
 
 orbite_initiale = Orbite(perigee, apogee, inclinaison )
 
