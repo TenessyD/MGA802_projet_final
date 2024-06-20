@@ -4,59 +4,6 @@ from matplotlib.patches import Circle
 from mpl_toolkits.mplot3d import art3d
 from .constantes import *
 
-
-
-class Two_body_problem:
-    """
-    Représente un problème à deux corps impliquant deux corps célestes.
-
-    Cet objet est particulièrement pertinent pour visualiser l'intéraction entre deux corps
-    de masse comparable dans l'espace. Cette intéraction ne prends nullement en compte les interactions
-    atmosphériques ou électro-magnétiques entre les corps.
-    """
-
-    def __init__(self, corps_a, corps_b, rayon=0, excent=0):
-        """
-        Initialise le problème à deux corps avec les paramètres donnés.
-
-        Args:
-            corps_a (SpaceBody): Objet représentant le premier corps céleste.
-            corps_b (SpaceBody): Objet représentant le deuxième corps céleste.
-            rayon (float): Paramètre de rayon pour la visualisation de l'orbite (par défaut 0).
-            excent (float): Paramètre d'excentricité pour la visualisation de l'orbite, compris entre 0 et 1 (par défaut 0).
-        """
-        self.corps_a = corps_a
-        self.corps_b = corps_b
-        self.rayon = rayon
-        self.excent = excent
-
-    def show(self):
-        """
-        Visualise le problème à deux corps en traçant les corps célestes et leurs orbites en deux dimensions.
-        """
-        # Position centrée de la planète dans le plan orbital
-        position_planete_a = (0, 0)
-        position_planete_b = (0, self.rayon)
-        # Création de la figure
-        fig, ax = plt.subplots()
-
-        # Cercle représentant la planète
-        cercle_planete_a = plt.Circle(position_planete_a, self.corps_a.radius, color=self.corps_a.color)
-        cercle_orbite = plt.Circle(position_planete_a, self.rayon, color='k', fill=False)
-        cercle_planete_b = plt.Circle(position_planete_b, self.corps_b.radius, color=self.corps_b.color)
-
-        # Ajout de la planète à la figure
-        ax.add_patch(cercle_orbite)
-        ax.add_patch(cercle_planete_a)
-        ax.add_patch(cercle_planete_b)
-
-        plt.xlim(xmin=-2 * self.rayon, xmax=2 * self.rayon)
-        plt.ylim(ymin=-2 * self.rayon, ymax=2 * self.rayon)
-
-        ax.axis("equal")
-        plt.show()
-
-
 class Orbite:
     """
     Représente la trajectoire orbitale d'un corps céleste.
@@ -223,6 +170,22 @@ class Orbite:
         # Création et retour de la nouvelle orbite
         nouvelle_orbite = Orbite(r_perigee, r_apogee, self.inclinaison)
         return nouvelle_orbite
+    def calculer_long_lat(self, rayon, angle_orbital,inclinaison):
+
+        inclinaison_rad = (inclinaison * np.pi) / 180
+        angle_orbital_rad = (angle_orbital * np.pi) / 180
+
+        # Calcul des coordonnées orbitales
+        x = rayon * np.cos(angle_orbital_rad)
+        y = rayon * np.sin(angle_orbital_rad) * np.cos(inclinaison_rad)
+        z = rayon * np.sin(angle_orbital_rad) * np.sin(inclinaison_rad)
+
+        # Conversion en long et lat
+        long = np.arctan2(y, x) * 180 / np.pi
+        lat = np.arctan2(z, np.sqrt(x ** 2 + y ** 2)) * 180 / np.pi
+
+        return [long,lat]
+
 
     def desorbitation(self, satellite, orbite, position, atmosphere, plot_orbit=False, force_propulsion=0):
         """
@@ -247,6 +210,7 @@ class Orbite:
         acceleration_radiale = []
         acceleration_tangentielle = []
         acceleration = []
+        angle_orbital = [0]
 
         # Conditions de position initiales
         match position:
@@ -264,11 +228,17 @@ class Orbite:
         # Tant que le satellite n'atteint pas 100 km
         while rayon[i] > (100000 + rayon_terre):
 
+            # Mise à jour de l'angle orbital
+            angle_orbital.append((angle_orbital[i] + (vitesse[i] * self.dt / rayon[i])))
+            long = self.calculer_long_lat(rayon[i], angle_orbital[i], orbite.inclinaison)[0]  # longitude à l'itération i
+            lat = self.calculer_long_lat(rayon[i], angle_orbital[i], orbite.inclinaison)[1]  # latitude à  l'itération i
+
             # Force gravitationnelle et de trainee
             force_gravite = -mu_terre / (rayon[i] ** 2)
 
             # Calcul de la force de trainée
-            densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//1000]
+
+            densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//10000]
             force_trainee = 0.5 * densite_air * satellite.surface * np.power(vitesse[i], 2) * satellite.cx
 
             # Calcul des composantes radiales et tangentielle des forces
@@ -285,8 +255,9 @@ class Orbite:
 
             # Mise à jour de la vitesse et de l'altitude
             vitesse.append((vitesse[i] + acceleration_tangentielle[i] * self.dt))
-            rayon.append((2 * mu_terre * orbite.a) / (orbite.a * np.power(vitesse[i], 2) + mu_terre))
+            rayon.append((2 * mu_terre * orbite.a) / (orbite.a * np.power(vitesse[i], 2) + mu_terre))  #
             temps.append(temps[i] + self.dt)
+
             i += 1
 
         # Affichage des trajectoires
@@ -318,4 +289,3 @@ class Orbite:
             plt.show()
 
         return jour[len(jour)-1]
-    
