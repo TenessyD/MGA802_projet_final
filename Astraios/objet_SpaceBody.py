@@ -1,3 +1,5 @@
+import numpy as np
+
 class SpaceBody():
     """
     Représente un corps céleste générique.
@@ -47,3 +49,18 @@ class Satellite(SpaceBody):
         super().__init__(mass)
         self.cx = cx                # [sans dimension]
         self.surface = cross_surface      # [m²]
+class cable:
+    def __init__(self, longueur_cable, resistance, inclinaison_alpha=0):
+        self.longueur_cable = longueur_cable
+        self.resistance = resistance
+        self.inclinaison_alpha = inclinaison_alpha/180*np.pi
+
+class satellite_magnetique(Satellite):
+
+    def __init__(self, mass, cross_surface, cable, position=None, cx=2):
+        super().__init__(mass, cross_surface, cx)
+        if position is None:
+            position = [0, 0, 0]
+        self.cable = cable
+        self.__position = position
+        self.angle_nord_vitesse = 0
