@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from mpl_toolkits.mplot3d import art3d
+import ppigrf
+from datetime import timedelta, datetime
 from .constantes import *
 
 class Orbite:
@@ -236,7 +238,13 @@ class Orbite:
             # Force gravitationnelle et de trainee
             force_gravite = -mu_terre / (rayon[i] ** 2)
 
-            # Calcul de la force de trainée
+            # Calcul du champ magnétique
+            date = datetime(2021, 3, 28)
+            [be, bn, bu] = ppigrf.igrf(long,lat,rayon[i],date)
+            bt = bn * np.cos(vitesse[i]) + be * np.sin(vitesse[i])
+
+            # Calcul de la force électromagnétique
+            force_lorentz = -1 * self.cable.longueur_cable ** 2 * bt ** 2 * vitesse[0] * np.cos(self.cable.inclinaison_alpha) / self.cable.resistance
 
             densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//10000]
             force_trainee = 0.5 * densite_air * satellite.surface * np.power(vitesse[i], 2) * satellite.cx
