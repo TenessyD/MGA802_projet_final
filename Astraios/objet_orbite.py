@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from mpl_toolkits.mplot3d import art3d
 import ppigrf
-from datetime import timedelta, datetime
+from datetime import datetime
 from .constantes import *
 
 class Orbite:
@@ -29,7 +29,6 @@ class Orbite:
             dt (int): Intervalle de temps pour la simulation en secondes (par défaut 1000).
             temps_simu (int): Durée de la simulation en secondes (par défaut 800000).
         """
-
         if perigee <= apogee:
             self.perigee = perigee
             self.apogee = apogee
@@ -110,9 +109,7 @@ class Orbite:
             texte_r_apogee = str(self.apogee)
             texte = f"rayon perigee : {texte_r_perigee}\nrayon apogee : {texte_r_apogee}"
             ax.text(0, 0, s=texte, z=0)
-
             plt.show()
-
         else:
             print("Echec, l'altitude de périgée doit être inférieure à l'apogée")
 
@@ -244,7 +241,7 @@ class Orbite:
             bt = bn * np.cos(vitesse[i]) + be * np.sin(vitesse[i])
 
             # Calcul de la force électromagnétique
-            force_lorentz = -1 * self.cable.longueur_cable ** 2 * bt ** 2 * vitesse[0] * np.cos(self.cable.inclinaison_alpha) / self.cable.resistance
+            force_lorentz = -1 * self.satellite.cable.longueur_cable ** 2 * bt ** 2 * vitesse[0] * np.cos(self.cable.inclinaison_alpha)/(self.cable.resistance)
 
             densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//10000]
             force_trainee = 0.5 * densite_air * satellite.surface * np.power(vitesse[i], 2) * satellite.cx

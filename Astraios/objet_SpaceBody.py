@@ -49,11 +49,12 @@ class Satellite(SpaceBody):
         super().__init__(mass)
         self.cx = cx                # [sans dimension]
         self.surface = cross_surface      # [m²]
+
 class cable:
-    def __init__(self, longueur_cable, resistance, inclinaison_alpha=0):
+    def __init__(self, longueur_cable, resistance, inclinaison_alpha = 0):
         self.longueur_cable = longueur_cable
         self.resistance = resistance
-        self.inclinaison_alpha = inclinaison_alpha/180*np.pi
+        self.inclinaison_alpha = inclinaison_alpha/(180*np.pi)
 
 class satellite_magnetique(Satellite):
 
@@ -62,5 +63,7 @@ class satellite_magnetique(Satellite):
         if position is None:
             position = [0, 0, 0]
         self.cable = cable
-        self.__position = position
-        self.angle_nord_vitesse = 0
+
+    def maj_position(self, long, lat, altitude):
+        self.position = [long,lat,altitude]
+        return
