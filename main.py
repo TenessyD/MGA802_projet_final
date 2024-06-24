@@ -3,9 +3,9 @@ import time
 
 # ---------------------Création d'orbite---------------------
 
-perigee = 200 * 10**3   # Altitude du périgée [m]
-apogee = 6000 * 10**3    # Altitude de l'apogée [m]
-inclinaison = -45         # Inclinaison de l'orbite [°]
+perigee = 1000 * 10**3   # Altitude du périgée [m]
+apogee = 1000 * 10**3      # Altitude de l'apogée [m]
+inclinaison = 0         # Inclinaison de l'orbite [°]
 
 orbite_initiale = Orbite(perigee, apogee, inclinaison )
 
@@ -17,18 +17,18 @@ position_manoeuvre = Position_manoeuvre.apogee  # Position de la manoeuvre ('per
 nouvelle_orbite = orbite_initiale.manoeuvre(delta_v, direction, position_manoeuvre)
 
 # Affichage du nouvel orbite
-nouvelle_orbite.plot_orbit()
+#nouvelle_orbite.plot_orbit()
 
 #-----------------------Desorbitation------------------------
 
 # Création d'un satellite et de l'atmosphère
-spoutnik = Satellite(100, 0.5, 2)
+spoutnik = Satellite(1300, 0.5, 2)
 atmosphere_terrestre = Atmosphere()
 start = time.time()
 
 # Affichage du temps de vie estimé
-tether = cable(5000,1)
-spoutnik_mag = satellite_magnetique(spoutnik)
+tether = Cable(5000,185, 35.26)
+spoutnik_mag = SatelliteMagnetique(spoutnik.mass, spoutnik.surface, tether)
 
 orbite_initiale.desorbitation(spoutnik_mag, orbite_initiale, position_manoeuvre, atmosphere_terrestre)
 print(f"Duree de calcul : {time.time() - start}")

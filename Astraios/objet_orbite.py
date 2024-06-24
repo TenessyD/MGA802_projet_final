@@ -186,7 +186,7 @@ class Orbite:
         return [long,lat]
 
 
-    def desorbitation(self, satellite, orbite, position, atmosphere, plot_orbit=False, force_propulsion=0):
+    def desorbitation(self, satellite_magnetique, orbite, position, atmosphere, plot_orbit=False, force_propulsion=0):
         """
         Calcule et affiche le temps de désorbitation du satellite en orbite.
 
@@ -221,7 +221,6 @@ class Orbite:
         # Conditions de vitesse initiale
         vitesse.append(np.sqrt(mu_terre * ((2 / rayon[0]) - 1 / orbite.a)))
         temps.append(0)
-
         i = 0
 
         # Tant que le satellite n'atteint pas 100 km
@@ -238,31 +237,39 @@ class Orbite:
             # Calcul du champ magnétique
             date = datetime(2021, 3, 28)
             [be, bn, bu] = ppigrf.igrf(long,lat,rayon[i],date)
+            be = np.squeeze(be) #/ 10 ** 9
+            bn = np.squeeze(bn) #/ 10 ** 9
+            bu = np.squeeze(bu) #/ 10 ** 9
+
             bt = bn * np.cos(vitesse[i]) + be * np.sin(vitesse[i])
+            print("Atitude = ", rayon[i] - rayon_terre)
+            print("Champs magnétique = ",bt)
+            # Calcul de la force électromagnétique puis de la trainée
+            force_lorentz = -1 * ((satellite_magnetique.cable.longueur_cable)**2) * ((bt)**2) * (vitesse[i]) * (np.cos(satellite_magnetique.cable.inclinaison_alpha_degres))/((satellite_magnetique.cable.resistance))
 
-            # Calcul de la force électromagnétique
-            force_lorentz = -1 * self.satellite.cable.longueur_cable ** 2 * bt ** 2 * vitesse[0] * np.cos(self.cable.inclinaison_alpha)/(self.cable.resistance)
+            print("Trainée électromagnétique = ", force_lorentz)
 
-            densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//10000]
-            force_trainee = 0.5 * densite_air * satellite.surface * np.power(vitesse[i], 2) * satellite.cx
+            # Calcul de la trainée atmosphérique
+            densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//1000]
+            force_trainee = 0.5 * densite_air * satellite_magnetique.surface * np.power(vitesse[i], 2) * satellite_magnetique.cx
+            print("Trainée atmosphérique = ", force_trainee)
 
+            return
             # Calcul des composantes radiales et tangentielle des forces
             force_radiale = force_gravite
-            force_tangentielle = force_propulsion + force_trainee
-
+            force_tangentielle = force_propulsion + forces_trainees
             # Calcul de l'accélération radiale et tangentielle
-            acceleration_radiale.append(force_radiale / satellite.mass)
-            acceleration_tangentielle.append(force_tangentielle / satellite.mass)
+            acceleration_radiale.append(force_radiale / satellite_magnetique.mass)
+            acceleration_tangentielle.append(force_tangentielle / satellite_magnetique.mass)
 
             # Accélération = (somme des forces / masse), ne prends pas en compte la difference
             # de masse au cours de la manoeuvre
-            acceleration.append((force_gravite + force_propulsion) / satellite.mass)
+            acceleration.append((force_gravite + force_propulsion) / satellite_magnetique.mass)
 
             # Mise à jour de la vitesse et de l'altitude
             vitesse.append((vitesse[i] + acceleration_tangentielle[i] * self.dt))
             rayon.append((2 * mu_terre * orbite.a) / (orbite.a * np.power(vitesse[i], 2) + mu_terre))  #
             temps.append(temps[i] + self.dt)
-
             i += 1
 
         # Affichage des trajectoires

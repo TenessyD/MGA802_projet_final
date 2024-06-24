@@ -7,26 +7,8 @@ class SpaceBody():
     Attributes:
         mass (float): La masse du corps céleste.
     """
-
     def __init__(self, mass=0):
         self.mass = mass
-
-
-class Planet(SpaceBody):
-    """
-    Représente une planète.
-
-    Attributes:
-        mass (float): La masse de la planète.
-        radius (float): Le rayon de la planète en mètres.
-        color (str): La couleur de la planète.
-    """
-
-    def __init__(self,mass, radius=0,color='b'):
-        super().__init__(mass)
-        self.radius = radius    # [m]
-        self.color = color
-
 
 class Satellite(SpaceBody):
     """
@@ -50,15 +32,14 @@ class Satellite(SpaceBody):
         self.cx = cx                # [sans dimension]
         self.surface = cross_surface      # [m²]
 
-class cable:
-    def __init__(self, longueur_cable, resistance, inclinaison_alpha = 0):
+class Cable:
+    def __init__(self, longueur_cable, resistance, inclinaison_alpha_degres = 15):
         self.longueur_cable = longueur_cable
         self.resistance = resistance
-        self.inclinaison_alpha = inclinaison_alpha/(180*np.pi)
+        self.inclinaison_alpha_degres = inclinaison_alpha_degres
 
-class satellite_magnetique(Satellite):
-
-    def __init__(self, mass, cross_surface, cable, position=None, cx=2):
+class SatelliteMagnetique(Satellite):
+    def __init__(self, mass, cross_surface, cable, position = None, cx=2):
         super().__init__(mass, cross_surface, cx)
         if position is None:
             position = [0, 0, 0]
