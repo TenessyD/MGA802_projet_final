@@ -170,7 +170,6 @@ class Orbite:
         nouvelle_orbite = Orbite(r_perigee, r_apogee, self.inclinaison)
         return nouvelle_orbite
     def calculer_long_lat(self, rayon, angle_orbital,inclinaison):
-
         inclinaison_rad = (inclinaison * np.pi) / 180
         angle_orbital_rad = (angle_orbital * np.pi) / 180
 
@@ -240,24 +239,23 @@ class Orbite:
             be = np.squeeze(be) #/ 10 ** 9
             bn = np.squeeze(bn) #/ 10 ** 9
             bu = np.squeeze(bu) #/ 10 ** 9
-
             bt = bn * np.cos(vitesse[i]) + be * np.sin(vitesse[i])
-            print("Atitude = ", rayon[i] - rayon_terre)
-            print("Champs magnétique = ",bt)
+
+            #print("Atitude = ", rayon[i] - rayon_terre)
+            #print("Champs magnétique = ",bt)
             # Calcul de la force électromagnétique puis de la trainée
             force_lorentz = -1 * ((satellite_magnetique.cable.longueur_cable)**2) * ((bt)**2) * (vitesse[i]) * (np.cos(satellite_magnetique.cable.inclinaison_alpha_degres))/((satellite_magnetique.cable.resistance))
 
-            print("Trainée électromagnétique = ", force_lorentz)
+            #print("Trainée électromagnétique = ", force_lorentz)
 
             # Calcul de la trainée atmosphérique
             densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//1000]
             force_trainee = 0.5 * densite_air * satellite_magnetique.surface * np.power(vitesse[i], 2) * satellite_magnetique.cx
-            print("Trainée atmosphérique = ", force_trainee)
+            #print("Trainée atmosphérique = ", force_trainee)
 
-            return
             # Calcul des composantes radiales et tangentielle des forces
             force_radiale = force_gravite
-            force_tangentielle = force_propulsion + forces_trainees
+            force_tangentielle = force_propulsion + force_trainee + force_lorentz
             # Calcul de l'accélération radiale et tangentielle
             acceleration_radiale.append(force_radiale / satellite_magnetique.mass)
             acceleration_tangentielle.append(force_tangentielle / satellite_magnetique.mass)
