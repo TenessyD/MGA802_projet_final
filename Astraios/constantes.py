@@ -32,3 +32,4 @@ class Position_manoeuvre(Enum):
     """
     apogee = 'apogee',   # Manoeuvre effectuée à l'apogée de l'orbite
     perigee = 'perigee'   # Manoeuvre effectuée au périgée de l'orbite
+
