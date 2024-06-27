@@ -59,7 +59,6 @@ class Orbite:
             i += 1
 
         self.afficher_deorb(rayon, temps)
-
         return temps[-1] / (24 * 3600)
 
     def desorbitation_PFD(self, satellite_magnetique, atmosphere, champ_mag):
@@ -145,7 +144,7 @@ class Orbite:
         return dr
 
 
-    def afficher_deorb(self, rayon ,temps, other=None):
+    def afficher_deorb(self, rayon ,temps):
         # Affichage des trajectoires
         jour = []
         alt = []
@@ -159,10 +158,22 @@ class Orbite:
         ax.set_ylabel('Altitude [m]')
         ax.set_title('Durée de vie du satellite')
         plt.title('Durée de vie du satellite')
-        if other is not None:
-            plt.subplot(2, 1, 2)
-            plt.plot(jour, other)
-            plt.subplot(2,1,1)
         plt.plot(jour, alt)
+        plt.grid()
+        plt.show()
+
+    def afficher_valeur(self, y, temps):
+        # Affichage des trajectoires
+        jour = []
+        for j in range(len(temps)):
+            jour.append(temps[j] / (24 * 3600))
+        fig = plt.figure()
+        ax = fig.add_subplot()
+        ax.set_title('Altitude en fonction du temps')
+        ax.set_xlabel('Temps [J]')
+        ax.set_ylabel('Altitude [m]')
+        ax.set_title('Durée de vie du satellite')
+        plt.title('Durée de vie du satellite')
+        plt.plot(jour, y)
         plt.grid()
         plt.show()
