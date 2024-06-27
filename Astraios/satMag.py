@@ -1,7 +1,6 @@
 from math import cos, pi, atan2
 from ai import cs
 
-
 class SpaceBody():
     """
     Représente un corps céleste générique.
@@ -36,21 +35,23 @@ class Satellite(SpaceBody):
         self.surface = cross_surface      # [m²]
 
 class cable:
-    def __init__(self, longueur_cable, resistance, inclinaison_alpha=0):
+    def __init__(self, longueur_cable, mass, materiau, inclinaison_alpha=0):
         self.longueur_cable = longueur_cable
-        self.resistance = resistance
+        self.mass = mass
+        self.volume = self.mass/materiau.densite
+        self.section = self.volume/self.longueur_cable
+        self.resistance = materiau.resistance_lineaire/self.section*longueur_cable
         self.inclinaison_alpha = inclinaison_alpha/180*pi
 
 class satellite_magnetique(Satellite):
 
-    def __init__(self, mass, cross_surface, cable, position=None, cx=2):
+    def __init__(self, mass, cross_surface, cable, position=None,cx=2):
         super().__init__(mass, cross_surface, cx)
         if position is None:
-            position = [0, 0, 0] #r, theta, phi
-        self.cable = cable
-        self.__position = position
+            position = [0, 0, 0]
+        self.__position = position #r, theta, phi
         self.angle_nord_vitesse = 0
-
+        self.cable = cable
     def calculer_Fe(self, Bt, Vo):
         return float(-1*self.cable.longueur_cable**2*Bt**2*Vo*cos(self.cable.inclinaison_alpha)/self.cable.resistance)
 
@@ -86,3 +87,12 @@ class satellite_magnetique(Satellite):
         d_phi = phi - old_position[2]
 
         self.angle_nord_vitesse = atan2(d_phi, d_theta) #ya erreur jpense
+
+    def calcul_des_masses(self, masse_systeme):
+        print(f'Resistance = {self.cable.resistance} ohms')
+        print(f'Section du cable = {self.cable.section*10**6:0.2f} mm^2')
+        print(f'Masse total satellite = {self.mass} kg')
+        print(f'Masse cable = {self.cable.mass} kg')
+        masse_cable_systeme = self.cable.mass+masse_systeme
+        print(f'Masse cable + systeme de deployement = {masse_cable_systeme} kg')
+        print(f'Pourcentage = {masse_cable_systeme/self.mass*100:0.2f} %')
