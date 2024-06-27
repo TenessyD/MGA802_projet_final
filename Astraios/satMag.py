@@ -35,12 +35,14 @@ class Satellite(SpaceBody):
         self.surface = cross_surface      # [m²]
 
 class cable:
-    def __init__(self, longueur_cable, section, materiau, inclinaison_alpha=0):
+    def __init__(self, longueur_cable, section, materiau, inclinaison_alpha=35.26, mass_ballast = 10):
+        self.mass_ballast = mass_ballast
+        self.materiau = materiau
         self.longueur_cable = longueur_cable
-        self.section = section*10**-6 #en mm2
-        self.mass = materiau.densite*self.longueur_cable*self.section
+        self.section = section*10**-6 #mm2 to m2
+        self.mass = self.materiau.densite*self.longueur_cable*self.section
         self.volume = self.section*self.longueur_cable
-        self.resistance = materiau.resistance_lineaire/self.section*self.longueur_cable
+        self.resistance = self.materiau.resistance_lineaire/self.section*self.longueur_cable
         self.inclinaison_alpha = inclinaison_alpha/180*pi
 
 class satellite_magnetique(Satellite):
@@ -52,8 +54,8 @@ class satellite_magnetique(Satellite):
         self.__position = position #r, theta, phi
         self.angle_nord_vitesse = 0
         self.cable = cable
-    def calculer_Fe(self, Bt, Vo):
-        return float(-1*self.cable.longueur_cable**2*Bt**2*Vo*cos(self.cable.inclinaison_alpha)/self.cable.resistance)
+    def calculer_Fe(self, Bt, Vo, Rc=0):
+        return float(-1*self.cable.longueur_cable**2*Bt**2*Vo*cos(self.cable.inclinaison_alpha)/(self.cable.resistance+Rc))
 
     def set_position(self, r=None, theta=None, phi=None):
         if r is None:
@@ -88,11 +90,11 @@ class satellite_magnetique(Satellite):
 
         self.angle_nord_vitesse = atan2(d_phi, d_theta) #ya erreur jpense
 
-    def calcul_des_masses(self, masse_systeme):
+    def calcul_des_masses(self):
         print(f'Resistance = {self.cable.resistance} ohms')
         print(f'Section du cable = {self.cable.section*10**6:0.2f} mm^2')
         print(f'Masse total satellite = {self.mass} kg')
         print(f'Masse cable = {self.cable.mass} kg')
-        masse_cable_systeme = self.cable.mass+masse_systeme
+        masse_cable_systeme = self.cable.mass+self.cable.mass_ballast
         print(f'Masse cable + systeme de deployement = {masse_cable_systeme} kg')
         print(f'Pourcentage = {masse_cable_systeme/self.mass*100:0.2f} %')

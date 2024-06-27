@@ -1,5 +1,5 @@
 import ppigrf
-from math import cos, sin
+from math import cos, sin, pi
 from datetime import timedelta
 from numpy import squeeze
 from .constantes import *
@@ -71,8 +71,10 @@ class champ_mag:
         delta_j = self.dt // (24 * 3600)
         new_date = self.date + timedelta(delta_j)
         r = (satellite.get_r() - rayon_terre) // 1000
-        theta = satellite.get_theta()
-        phi = satellite.get_phi()
+        theta = satellite.get_theta()*180/pi
+        phi = satellite.get_phi()*180/pi
+        if phi >=180:
+            phi  = phi-360
 
         [be, bn, bu] = ppigrf.igrf(phi, theta, r, new_date)  # utiliser igrf_gc plutot sauf que igrf_gc cest de la merde
         # cest surement des degre (à revoir donc)

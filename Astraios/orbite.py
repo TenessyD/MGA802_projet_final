@@ -16,6 +16,10 @@ class Orbite:
         rayon = []
         vitesse = []
         theta = [0]
+        puissance = [0]
+        puissance_max = [0]
+        puissance_corrige = [0]
+        test = [0]
 
         # Conditions de position initiales
         satellite.set_position(r=self.rayon_total)
@@ -47,18 +51,31 @@ class Orbite:
             satellite.set_position(r=rayon[i+1])
             vitesse.append(self.vitesse_kepler(rayon[i+1]))
 
-            angle = np.atan2(rayon[i], vitesse[i] * self.dt) #possible de perfectionner parceque cest surement un peu chelou
+            angle = np.atan2(vitesse[i] * self.dt, rayon[i]) #possible de perfectionner parceque cest surement un peu chelou
             equateur += angle
 
             satellite.update_etat(equateur, self.inclinaison)
 
             Bt = champ_mag.calculer_Bt(satellite, dt=self.dt)
+
+            vitesse_par_rapport_ch_mag = vitesse[i+1]-2*np.pi*rayon[i+1]*np.cos(self.inclinaison)
+            puissance.append(force_mag*vitesse_par_rapport_ch_mag)
+
+            force_mag_corrige = satellite.calculer_Fe(Bt, vitesse[i])*np.cos(satellite.cable.inclinaison_alpha)
+            puissance_corrige.append(force_mag_corrige * vitesse_par_rapport_ch_mag)
+
+            gamma = mu_terre/rayon[i+1]**3
+            fd_max = -2.31*gamma*satellite.cable.longueur_cable*(satellite.cable.mass_ballast + satellite.cable.mass/4)
+            puissance_max.append(fd_max*vitesse_par_rapport_ch_mag)
+
             temps.append(temps[i] + self.dt)
             theta.append(satellite.get_theta())
 
             i += 1
 
         self.afficher_deorb(rayon, temps)
+        self.afficher_valeur([puissance, puissance_max, puissance_corrige], temps)
+        # self.afficher_valeur([test], temps)
         return temps[-1] / (24 * 3600)
 
     def desorbitation_PFD(self, satellite_magnetique, atmosphere, champ_mag):
@@ -164,6 +181,7 @@ class Orbite:
 
     def afficher_valeur(self, y, temps):
         # Affichage des trajectoires
+        y = np.array(y).transpose()
         jour = []
         for j in range(len(temps)):
             jour.append(temps[j] / (24 * 3600))
