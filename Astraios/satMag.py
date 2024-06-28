@@ -47,7 +47,7 @@ class cable:
 
 class satellite_magnetique(Satellite):
 
-    def __init__(self, mass, cross_surface, cable, position=None,cx=2):
+    def __init__(self, mass, cross_surface, cable, position=None, cx=2):
         super().__init__(mass, cross_surface, cx)
         if position is None:
             position = [0, 0, 0]

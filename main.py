@@ -33,16 +33,13 @@ resistance_linéaire_alu = parsed_data['materiau']['aluminium']['resistance_line
 champ_magnetique = champ_mag(date)
 atmosphere_terrestre = Atmosphere()
 
-whole_path = os.path.join(os.path.abspath(os.path.curdir), "data.yaml")
-parser = LecteurYAML(whole_path)
-parsed_data = parser.read_yaml()
-
 copper = materiau(densite_cuivre, resistance_linéaire_cuivre)
 alu = materiau(densite_alu, resistance_linéaire_alu)
-cable_mag = cable(longueur,section,alu,masse_ballaste)
+cable_mag = cable(longueur,section,alu,mass_ballast=masse_ballaste)
 satMag = satellite_magnetique(masse_satelitte,surface_de_trainee,cable_mag)
+satMag.calcul_des_masses()
 
-orbite = Orbite(altitude, inclinaison, dt)
+orbite = Orbite(altitude, inclinaison, dt=dt)
 
-orbite.desorbitation_PFD(satMag, atmosphere_terrestre, champ_magnetique)
+orbite.desorbitation_Energie(satMag, atmosphere_terrestre, champ_magnetique)
 

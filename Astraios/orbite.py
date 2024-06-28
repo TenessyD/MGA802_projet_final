@@ -61,10 +61,6 @@ class Orbite:
             vitesse_par_rapport_ch_mag = vitesse[i+1]-2*np.pi*rayon[i+1]*np.cos((11.5+self.inclinaison)/180*np.pi)
             puissance.append(force_mag*vitesse_par_rapport_ch_mag)
 
-            resistance_de_correction = 0
-            force_mag_corrige = satellite.calculer_Fe(Bt, vitesse[i], resistance_de_correction)*np.cos(satellite.cable.inclinaison_alpha)
-            puissance_corrige.append(force_mag_corrige * vitesse_par_rapport_ch_mag)
-
             gamma = mu_terre/rayon[i+1]**3
             fd_max = -2.31*gamma*satellite.cable.longueur_cable*(satellite.cable.mass_ballast + satellite.cable.mass/4)
             puissance_max.append(fd_max*vitesse_par_rapport_ch_mag)
@@ -75,7 +71,7 @@ class Orbite:
             i += 1
 
         self.afficher_deorb(rayon, temps)
-        self.afficher_valeur([puissance, puissance_max, puissance_corrige], temps)
+        self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
         # self.afficher_valeur([test], temps)
         return temps[-1] / (24 * 3600)
 
