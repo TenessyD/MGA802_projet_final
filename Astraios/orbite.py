@@ -192,3 +192,7 @@ class Orbite:
         plt.plot(jour, y)
         plt.grid()
         plt.show()
+
+    def calculer_vitesse_initial(self):
+        self.vitesse_initial = np.sqrt(mu_terre / self.rayon_total)
+        return self.vitesse_initial
