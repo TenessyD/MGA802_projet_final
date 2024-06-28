@@ -61,7 +61,8 @@ class Orbite:
             vitesse_par_rapport_ch_mag = vitesse[i+1]-2*np.pi*rayon[i+1]*np.cos((11.5+self.inclinaison)/180*np.pi)
             puissance.append(force_mag*vitesse_par_rapport_ch_mag)
 
-            force_mag_corrige = satellite.calculer_Fe(Bt, vitesse[i])*np.cos(satellite.cable.inclinaison_alpha)
+            resistance_de_correction = 0
+            force_mag_corrige = satellite.calculer_Fe(Bt, vitesse[i], resistance_de_correction)*np.cos(satellite.cable.inclinaison_alpha)
             puissance_corrige.append(force_mag_corrige * vitesse_par_rapport_ch_mag)
 
             gamma = mu_terre/rayon[i+1]**3
