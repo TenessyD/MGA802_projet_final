@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 
 class Atmosphere:
+
     """    Classe représentant les propriétés de l'atmosphère terrestre.
     Le modèle établit utilise le modèle de Jacchia-Lineberry pour calculer
     la densite de l'atmosphère en ultra-haute altitude. Cet objet permet donc de
@@ -57,7 +58,7 @@ class Atmosphere:
             # En utilisant la température en très haute atmosphère
             H = self.temperature / m   # [km]
 
-            rho = 6 * (1 / np.power(10, 10)) * np.exp(-((altitude / 1000) - 175) / H)       # [kg / m3]
+            rho = 6 * (1 / np.power(10, 10, dtype='int64')) * np.exp(-((altitude / 1000) - 175) / H)       # [kg / m3]
             rho = rho.item()
 
         return rho
@@ -73,7 +74,6 @@ class Atmosphere:
         intervalle = 1000  # Intervalle en mètres
         densites_air = [self.calculer_densite_air(altitude) for altitude in
                         range(0, altitude_max + intervalle, intervalle)]
-
         return densites_air
 
     def calculer_temperature(self, annee=2023, mois=4, jour=1, heure=0.0):
