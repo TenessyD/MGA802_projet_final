@@ -11,7 +11,7 @@ class Orbite:
         self.temps_simu = temps_simu
         self.erreur = False
 
-    def desorbitation_Energie(self, satellite, atmosphere, champ_mag):
+    def calculer_temps_desorbitation_energie(self, satellite, atmosphere, champ_mag):
         # Initialisation des variables
         temps = []
         rayon = []
@@ -28,7 +28,7 @@ class Orbite:
         vitesse.append(self.vitesse_kepler(self.rayon_total))
         temps.append(0)
 
-        # autres conditions positions initiales
+        # Autres conditions positions initiales
         equateur = 0
         angle_nord_vitesse_initiale = np.pi/2 - self.inclinaison/180*np.pi
         Bt = champ_mag.calculer_Bt(satellite, vitesse=angle_nord_vitesse_initiale)
@@ -76,18 +76,20 @@ class Orbite:
             i += 1
 
         pbar.close()
-        self.afficher_deorb(rayon, temps)
+        self.afficher_temps_desorbitation(rayon, temps,"energetique")
         self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
         # self.afficher_valeur([test], temps)
         return temps[-1] / (24 * 3600)
 
-    def desorbitation_PFD(self, satellite_magnetique, atmosphere, champ_mag):
+    def calculer_temps_desorbitation_PFD(self, satellite_magnetique, atmosphere, champ_mag):
         # Initialisation des variables
         temps = []
         rayon = []
         vitesse = []
         acceleration_radiale = []
         acceleration_tangentielle = []
+        puissance = [0]
+        puissance_max = [0]
         theta = [0]
 
         # Conditions de position initiales
@@ -101,6 +103,8 @@ class Orbite:
 
         equateur = 0
         angle_nord_vitesse_initiale = np.pi/2 - self.inclinaison/180*np.pi
+
+        # Calcul de la composante transversale du champ magnétique
         Bt = champ_mag.calculer_Bt(satellite_magnetique, vitesse=angle_nord_vitesse_initiale)
 
         # Tant que le satellite n'atteint pas 100 km
@@ -112,31 +116,23 @@ class Orbite:
             # Calcul du champ magnétique
             force_lorentz = (- satellite_magnetique.calculer_Fe(Bt, vitesse[i])*np.cos(satellite_magnetique.cable.inclinaison_alpha))
 
-            #print("Atitude = ", rayon[i] - rayon_terre)
-            #print("Champs magnétique = ",bt)
-            # Calcul de la force électromagnétique puis de la trainée
-            #print("Trainée électromagnétique = ", force_lorentz)
-
             # Calcul de la trainée atmosphérique
             densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//1000]
             force_trainee = 0.5 * densite_air * satellite_magnetique.surface * np.power(vitesse[i], 2) * satellite_magnetique.cx
-            #print("Trainée atmosphérique = ", force_trainee)
 
             # Calcul des composantes radiales et tangentielle des forces
             force_radiale = force_gravite
             force_tangentielle = force_trainee + force_lorentz
+
             # Calcul de l'accélération radiale et tangentielle
             acceleration_radiale.append(force_radiale / satellite_magnetique.mass)
             acceleration_tangentielle.append(force_tangentielle / satellite_magnetique.mass)
-
-            # Accélération = (somme des forces / masse), ne prends pas en compte la difference
-            # de masse au cours de la manoeuvre
 
             # Mise à jour de la vitesse et de l'altitude
             vitesse.append((vitesse[i] + acceleration_tangentielle[i] * self.dt))
             rayon.append(mu_terre/vitesse[i+1]**2)
 
-            angle = np.atan2(rayon[i],vitesse[i] * self.dt)  # possible de perfectionner parceque cest surement un peu chelou
+            angle = np.atan2(vitesse[i] * self.dt, rayon[i])  # possible de perfectionner parceque cest surement un peu chelou
             equateur += angle
 
             satellite_magnetique.update_etat(equateur, self.inclinaison)
@@ -144,9 +140,17 @@ class Orbite:
             Bt = champ_mag.calculer_Bt(satellite_magnetique, dt=self.dt)
             temps.append(temps[i] + self.dt)
             theta.append(satellite_magnetique.get_theta())
+
+            vitesse_par_rapport_ch_mag = vitesse[i+1]-2*np.pi*rayon[i+1]*np.cos((11.5+self.inclinaison)/180*np.pi)
+            puissance.append(-force_lorentz*vitesse_par_rapport_ch_mag)
+
+            gamma = mu_terre/rayon[i+1]**3
+            fd_max = -2.31*gamma*satellite_magnetique.cable.longueur_cable*(satellite_magnetique.cable.mass_ballast + satellite_magnetique.cable.mass/4)
+            puissance_max.append(fd_max*vitesse_par_rapport_ch_mag)
             i += 1
 
-        self.afficher_deorb(rayon, temps)
+        self.afficher_temps_desorbitation(rayon, temps,"pfd")
+        self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
         return temps[-1] / (24 * 3600)
 
     def vitesse_kepler(self, h):
@@ -162,8 +166,7 @@ class Orbite:
         dr = - 2 / (mu_terre * satellite.mass) * satellite.get_r() ** 2 * (P_d)
         return dr
 
-
-    def afficher_deorb(self, rayon ,temps):
+    def afficher_temps_desorbitation(self, rayon ,temps,approche):
         # Affichage des trajectoires
         jour = []
         alt = []
@@ -176,7 +179,10 @@ class Orbite:
         ax.set_xlabel('Temps [J]')
         ax.set_ylabel('Altitude [m]')
         ax.set_title('Durée de vie du satellite')
-        plt.title('Durée de vie du satellite')
+        if (approche == "energetique"):
+            plt.title("Durée de vie du satellite calculée avec l'approche énergétique")
+        elif (approche == "pfd"):
+            plt.title("Durée de vie du satellite calculée avec le PFD")
         plt.plot(jour, alt)
         plt.grid()
         plt.show()
@@ -189,12 +195,16 @@ class Orbite:
             jour.append(temps[j] / (24 * 3600))
         fig = plt.figure()
         ax = fig.add_subplot()
-        ax.set_title('Altitude en fonction du temps')
-        ax.set_xlabel('Temps [J]')
-        ax.set_ylabel('Altitude [m]')
-        ax.set_title('Durée de vie du satellite')
-        plt.title('Durée de vie du satellite')
-        plt.plot(jour, y)
+        ax.set_title("Puissance dissipée par l'antenne électromgnétique")
+        ax.set_xlabel('Durée [J]')
+        ax.set_ylabel('Puissance [W]')
+        ax.set_title("Puissance dissipée par l'antenne électromgnétique")
+        plt.title("Puissance dissipée par l'antenne électromgnétique")
+
+        plt.plot(jour, y[:, 0], label="puissance dissipée par le cable")
+        plt.plot(jour, y[:, 1], label="puissance max à ne pas dépasser")
+
+        plt.legend(loc='upper right')
         plt.grid()
         plt.show()
 
