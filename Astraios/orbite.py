@@ -28,6 +28,7 @@ class Orbite:
         # Conditions de vitesse initiale
         vitesse.append(self.vitesse_kepler(self.rayon_total))
         temps.append(0)
+        self.vitesse_initial=vitesse[0]
 
         # autres conditions positions initiales
         equateur = 0
@@ -76,7 +77,7 @@ class Orbite:
 
         self.afficher_deorb(rayon, temps)
         self.afficher_valeur([puissance, puissance_max, puissance_corrige], temps)
-        # self.afficher_valeur([test], temps)
+        self.afficher_valeur([vitesse], temps)
         return temps[-1] / (24 * 3600)
 
     def desorbitation_PFD(self, satellite_magnetique, atmosphere, champ_mag):
@@ -97,6 +98,7 @@ class Orbite:
         vitesse.append(np.sqrt(mu_terre / rayon[0]))
         temps.append(0)
         i = 0
+
 
         equateur = 0
         angle_nord_vitesse_initiale = np.pi/2 - self.inclinaison/180*np.pi
@@ -196,3 +198,7 @@ class Orbite:
         plt.plot(jour, y)
         plt.grid()
         plt.show()
+
+    def calculer_vitesse_initial(self):
+        self.vitesse_initial = np.sqrt(mu_terre / self.rayon_total)
+        return self.vitesse_initial
