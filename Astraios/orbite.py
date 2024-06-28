@@ -37,7 +37,7 @@ class Orbite:
         i = 0
 
         # Tant que le satellite n'atteint pas 100 km
-        while rayon[i] > (100000 + rayon_terre) and i < 100000:
+        while rayon[i] > (100000 + rayon_terre):
             force_trainee = self.caluler_trainee(atmosphere, satellite, vitesse[i])
             # Calcul force mag
             force_mag = satellite.calculer_Fe(Bt, vitesse[i])*np.cos(satellite.cable.inclinaison_alpha)
