@@ -41,7 +41,8 @@ satMag.calcul_des_masses()
 
 orbite = Orbite(altitude, inclinaison, dt=dt)
 
-orbite.desorbitation_Energie(satMag, atmosphere_terrestre, champ_magnetique)
+orbite.calculer_temps_desorbitation_energie(satMag, atmosphere_terrestre, champ_magnetique)
+orbite.calculer_temps_desorbitation_PFD(satMag, atmosphere_terrestre, champ_magnetique)
 
-print(f'L altitude initiale du satellite est {altitude+rayon_terre}')
+print(f"L'altitude initiale du satellite est {altitude+rayon_terre}")
 print(f'La vitesse initiale du satellite est {orbite.calculer_vitesse_initial()}')
