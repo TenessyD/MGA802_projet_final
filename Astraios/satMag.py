@@ -42,7 +42,7 @@ class cable:
         self.section = section*10**-6 #mm2 to m2
         self.mass = self.materiau.densite*self.longueur_cable*self.section
         self.volume = self.section*self.longueur_cable
-        self.resistance = self.materiau.resistance/self.section*self.longueur_cable
+        self.resistance = self.materiau.resistance/self.section*self.longueur_cable or 1
         self.inclinaison_alpha = inclinaison_alpha/180*pi
 
 class satellite_magnetique(Satellite):
