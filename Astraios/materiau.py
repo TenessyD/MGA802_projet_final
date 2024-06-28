@@ -1,4 +1,4 @@
 class materiau:
-    def __init__(self, densite, resistance_lineaire):
+    def __init__(self, densite, resistance):
         self.densite = densite
-        self.resistance_lineaire = resistance_lineaire
+        self.resistance = resistance
