@@ -58,7 +58,7 @@ class Atmosphere:
             # En utilisant la température en très haute atmosphère
             H = self.temperature / m   # [km]
 
-            rho = 6 * (1 / np.power(10, 10)) * np.exp(-((altitude / 1000) - 175) / H)       # [kg / m3]
+            rho = 6 * (1 / np.power(10, 10, dtype='int64')) * np.exp(-((altitude / 1000) - 175) / H)       # [kg / m3]
             rho = rho.item()
 
         return rho

@@ -3,7 +3,6 @@ from enum import Enum
 
 # Constante représentant le paramètre gravitationnel standard de la Terre en m^3/s^2
 mu_terre = 3.986e14
-
 # Constante représentant le rayon moyen de la Terre en mètres
 rayon_terre = 6.371e6
 
