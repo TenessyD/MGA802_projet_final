@@ -2,7 +2,7 @@
 orbite:
   altitude: 500000.0         # Altitude du périgée [m]
   inclinaison: 0.0           # Inclinaison orbitale en °
-  dt: 3600
+  dt: 300
 
 # ---------------------Propriétés des matériaux du cable---------------------
 materiau:                    # matériaux possibles pour le cable

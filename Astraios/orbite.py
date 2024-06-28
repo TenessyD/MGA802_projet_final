@@ -1,6 +1,7 @@
 from .constantes import *
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 class Orbite:
     def __init__(self, h, inclinaison=0, dt=1000, temps_simu=800000):
@@ -18,8 +19,6 @@ class Orbite:
         theta = [0]
         puissance = [0]
         puissance_max = [0]
-        puissance_corrige = [0]
-        test = [0]
 
         # Conditions de position initiales
         satellite.set_position(r=self.rayon_total)
@@ -37,6 +36,8 @@ class Orbite:
         i = 0
 
         # Tant que le satellite n'atteint pas 100 km
+        pbar = tqdm(total=(rayon[0] - rayon_terre)//1000 - 100)
+        progress = (rayon[0] - rayon_terre)//1000 - 100
         while rayon[i] > (100000 + rayon_terre):
             force_trainee = self.caluler_trainee(atmosphere, satellite, vitesse[i])
             # Calcul force mag
@@ -48,6 +49,10 @@ class Orbite:
             k2 = self.dr_dt(satellite, vitesse[i], forces)
 
             rayon.append(rayon[i] + (k1 + k2) * self.dt / 2)
+            if (delta_progression := progress - ((rayon[i+1] - rayon_terre)//1000 - 100)) > 0:
+                progress -= delta_progression
+                pbar.update(delta_progression)
+
             satellite.set_position(r=rayon[i+1])
             vitesse.append(self.vitesse_kepler(rayon[i+1]))
 
@@ -70,6 +75,7 @@ class Orbite:
 
             i += 1
 
+        pbar.close()
         self.afficher_deorb(rayon, temps)
         self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
         # self.afficher_valeur([test], temps)
@@ -82,7 +88,6 @@ class Orbite:
         vitesse = []
         acceleration_radiale = []
         acceleration_tangentielle = []
-        angle_orbital = [0]
         theta = [0]
 
         # Conditions de position initiales
