@@ -1,6 +1,6 @@
 # ---------------------Création de l'orbite initiale---------------------
 orbite:
-  altitude: 500000.0         # Altitude du périgée [m]
+  altitude: 200000.0         # Altitude du périgée [m]
   inclinaison: 0.0           # Inclinaison orbitale en °
   dt: 300
 
