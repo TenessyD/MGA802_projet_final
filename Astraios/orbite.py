@@ -1,17 +1,18 @@
 from .constantes import *
 import numpy as np
 import matplotlib.pyplot as plt
-from tqdm import tqdm, gui
+from tqdm import tqdm
+import pandas as pd
 
 class Orbite:
     def __init__(self, h, inclinaison=0, dt=1000, temps_simu=800000):
         self.puissances = None
-        self.rayon = None
+        self.rayon = []
+        self.temps = []
         self.rayon_total = h + rayon_terre
         self.dt = dt
         self.inclinaison = inclinaison
         self.temps_simu = temps_simu
-        self.erreur = False
         self.approche = None
 
     def calculer_temps_desorbitation(self, satellite, atmosphere, champ_mag, approche):
@@ -19,9 +20,6 @@ class Orbite:
         nouvelle_vitesse = None
         nouveau_rayon = None
         self.approche = approche
-        self.temps = []
-        self.rayon = []
-        self.puissances = []
         vitesse = []
         theta = [0]
         puissance = [0]
@@ -163,3 +161,6 @@ class Orbite:
     def calculer_vitesse_initial(self):
         self.vitesse_initial = np.sqrt(mu_terre / self.rayon_total)
         return self.vitesse_initial
+
+    def save_data(self, filename):
+        np.savetxt(filename, np.asarray([self.temps, self.rayon]).transpose(), delimiter=';')
