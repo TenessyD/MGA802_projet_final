@@ -104,7 +104,7 @@ class Orbite:
         equateur = 0
         angle_nord_vitesse_initiale = np.pi/2 - self.inclinaison/180*np.pi
 
-        # Calcul de la composante transversale du champ magnétique
+        # Récupération de la composante transversale du champ magnétique
         Bt = champ_mag.calculer_Bt(satellite_magnetique, vitesse=angle_nord_vitesse_initiale)
 
         # Tant que le satellite n'atteint pas 100 km
@@ -113,8 +113,8 @@ class Orbite:
             # Force gravitationnelle et de trainee
             force_gravite = -mu_terre / (rayon[i] ** 2)
 
-            # Calcul du champ magnétique
-            force_lorentz = (- satellite_magnetique.calculer_Fe(Bt, vitesse[i])*np.cos(satellite_magnetique.cable.inclinaison_alpha))
+            # Calcul de la force electromagnétique
+            force_lorentz = (-satellite_magnetique.calculer_Fe(Bt, vitesse[i])*np.cos(satellite_magnetique.cable.inclinaison_alpha))
 
             # Calcul de la trainée atmosphérique
             densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//1000]
@@ -132,7 +132,7 @@ class Orbite:
             vitesse.append((vitesse[i] + acceleration_tangentielle[i] * self.dt))
             rayon.append(mu_terre/vitesse[i+1]**2)
 
-            angle = np.atan2(vitesse[i] * self.dt, rayon[i])  # possible de perfectionner parceque cest surement un peu chelou
+            angle = np.atan2(vitesse[i] * self.dt, rayon[i])
             equateur += angle
 
             satellite_magnetique.update_etat(equateur, self.inclinaison)
@@ -149,8 +149,8 @@ class Orbite:
             puissance_max.append(fd_max*vitesse_par_rapport_ch_mag)
             i += 1
 
-        self.afficher_temps_desorbitation(rayon, temps,"pfd")
-        self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
+        #self.afficher_temps_desorbitation(rayon, temps,"pfd")
+        #self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
         return temps[-1] / (24 * 3600)
 
     def vitesse_kepler(self, h):
@@ -173,19 +173,21 @@ class Orbite:
         for j in range(len(temps)):
             jour.append(temps[j] / (24 * 3600))
             alt.append(rayon[j] - rayon_terre)
-        fig = plt.figure()
-        ax = fig.add_subplot()
-        ax.set_title('Altitude en fonction du temps')
-        ax.set_xlabel('Temps [J]')
-        ax.set_ylabel('Altitude [m]')
-        ax.set_title('Durée de vie du satellite')
-        if (approche == "energetique"):
-            plt.title("Durée de vie du satellite calculée avec l'approche énergétique")
-        elif (approche == "pfd"):
-            plt.title("Durée de vie du satellite calculée avec le PFD")
-        plt.plot(jour, alt)
-        plt.grid()
-        plt.show()
+        #
+        # fig = plt.figure()
+        # ax = fig.add_subplot()
+        # ax.set_title('Altitude en fonction du temps')
+        # ax.set_xlabel('Temps [J]')
+        # ax.set_ylabel('Altitude [m]')(
+        # ax.set_title('Durée de vie du satellite')
+        # if (approche == "energetique"):
+        #     plt.title("Durée de vie du satellite calculée avec l'approche énergétique")
+        # elif (approche == "pfd"):
+        #     plt.title("Durée de vie du satellite calculée avec le PFD")
+        # plt.plot(jour, alt)
+        # plt.grid()
+        # plt.show()
+        return jour[-1]
 
     def afficher_valeur(self, y, temps):
         # Affichage des trajectoires
