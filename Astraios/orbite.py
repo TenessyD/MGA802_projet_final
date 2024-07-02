@@ -1,7 +1,7 @@
 from .constantes import *
 import numpy as np
 import matplotlib.pyplot as plt
-from tqdm import tqdm
+from tqdm import tqdm, gui
 
 class Orbite:
     def __init__(self, h, inclinaison=0, dt=1000, temps_simu=800000):
@@ -43,13 +43,13 @@ class Orbite:
         i = 0
 
         # Tant que le satellite n'atteint pas 100 km
-        pbar = tqdm(total=(self.rayon[0] - rayon_terre)//1000 - 100)
+        pbar = tqdm(total=(self.rayon[0] - rayon_terre)//1000 - 100,colour='blue')
         progress = (self.rayon[0] - rayon_terre)//1000 - 100
         while self.rayon[i] > (100000 + rayon_terre):
             force_trainee = self.caluler_trainee(atmosphere, satellite, vitesse[i])
             # Calcul force mag
             force_mag = satellite.calculer_Fe(Bt, vitesse[i], Rc=satellite.cable.resistance_de_controle)*np.cos(satellite.cable.inclinaison_alpha)
-            forces = [force_trainee, -force_mag] #force mag le signe t'a capté
+            forces = [force_trainee, -force_mag]
 
             if self.approche == 'energetique':
                 k1 = self.dr_dt(satellite, vitesse[i], forces)
@@ -57,8 +57,6 @@ class Orbite:
                 k2 = self.dr_dt(satellite, vitesse[i], forces)
                 nouveau_rayon = self.rayon[i] + (k1 + k2) * self.dt / 2
                 nouvelle_vitesse = self.vitesse_kepler(nouveau_rayon)
-                self.rayon.append(self.rayon[i] + (k1 + k2) * self.dt / 2)
-                vitesse.append(self.vitesse_kepler(self.rayon[i+1]))
             elif self.approche == 'pfd':
                 nouvelle_vitesse = vitesse[i] + sum(forces)/satellite.mass * self.dt
                 nouveau_rayon = mu_terre / nouvelle_vitesse ** 2

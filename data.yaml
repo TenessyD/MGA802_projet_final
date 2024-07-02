@@ -9,7 +9,7 @@ satelitte_magnetique:
   masse: 1000.0 #kg
   surface_de_trainee: 15.0
   cable:
-    longueur: 0 #m
+    longueur: 5000 #m
     section: 0.785 #mm2
     materiau: aluminium
     ballast_mass: 25.0 #kg
