@@ -159,8 +159,6 @@ class Orbite:
 
         pbar.close()
         self.approche = 'pfd'
-        altitude = [r - rayon_terre for r in self.rayon]
-        np.savetxt('donne_sans_cable_PFD', np.asarray([self.temps, altitude]), delimiter=';')
         self.puissances = [puissance[1:], puissance_max[1:]]
         return self.temps[-1] / (24 * 3600)
 
@@ -196,7 +194,12 @@ class Orbite:
             plt.title("Durée de vie du satellite calculée avec le PFD")
         plt.plot(jour, alt)
         if donnees_sans_cable:
-            donne = np.genfromtxt('data/donne_sans_cable.csv', delimiter=';')
+            filename = None
+            if self.approche == 'energetique':
+                filename = 'data/donne_sans_cable_energie.csv'
+            elif self.approche == 'pfd':
+                filename = 'data/donne_sans_cable_PFD.csv'
+            donne = np.genfromtxt(filename, delimiter=';')
             temps = donne[:, 0]
             rayon = donne[:, 1]
             jour_sc = []
