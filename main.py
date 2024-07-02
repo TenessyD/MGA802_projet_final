@@ -36,7 +36,7 @@ satMag.calcul_des_masses()
 
 orbite = Orbite(altitude, inclinaison, dt=dt)
 
-orbite.calculer_temps_desorbitation_PFD(satMag, atmosphere_terrestre, champ_magnetique)
+orbite.calculer_temps_desorbitation(satMag, atmosphere_terrestre, champ_magnetique, 'pfd')
 orbite.afficher_temps_desorbitation(True)
 orbite.afficher_puissances()
 

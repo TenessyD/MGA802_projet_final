@@ -14,8 +14,11 @@ class Orbite:
         self.erreur = False
         self.approche = None
 
-    def calculer_temps_desorbitation_energie(self, satellite, atmosphere, champ_mag):
+    def calculer_temps_desorbitation(self, satellite, atmosphere, champ_mag, approche):
         # Initialisation des variables
+        nouvelle_vitesse = None
+        nouveau_rayon = None
+        self.approche = approche
         self.temps = []
         self.rayon = []
         self.puissances = []
@@ -48,21 +51,29 @@ class Orbite:
             force_mag = satellite.calculer_Fe(Bt, vitesse[i], Rc=satellite.cable.resistance_de_controle)*np.cos(satellite.cable.inclinaison_alpha)
             forces = [force_trainee, -force_mag] #force mag le signe t'a capté
 
-            k1 = self.dr_dt(satellite, vitesse[i], forces)
-            satellite.set_position(r=self.rayon[i]+k1*self.dt)
-            k2 = self.dr_dt(satellite, vitesse[i], forces)
+            if self.approche == 'energetique':
+                k1 = self.dr_dt(satellite, vitesse[i], forces)
+                satellite.set_position(r=self.rayon[i]+k1*self.dt)
+                k2 = self.dr_dt(satellite, vitesse[i], forces)
+                nouveau_rayon = self.rayon[i] + (k1 + k2) * self.dt / 2
+                nouvelle_vitesse = self.vitesse_kepler(nouveau_rayon)
+                self.rayon.append(self.rayon[i] + (k1 + k2) * self.dt / 2)
+                vitesse.append(self.vitesse_kepler(self.rayon[i+1]))
+            elif self.approche == 'pfd':
+                nouvelle_vitesse = vitesse[i] + sum(forces)/satellite.mass * self.dt
+                nouveau_rayon = mu_terre / nouvelle_vitesse ** 2
 
-            self.rayon.append(self.rayon[i] + (k1 + k2) * self.dt / 2)
+            vitesse.append(nouvelle_vitesse)
+            self.rayon.append(nouveau_rayon)
+
             if (delta_progression := progress - ((self.rayon[i+1] - rayon_terre)//1000 - 100)) > 0:
                 progress -= delta_progression
                 pbar.update(delta_progression)
 
-            satellite.set_position(r=self.rayon[i+1])
-            vitesse.append(self.vitesse_kepler(self.rayon[i+1]))
-
             angle = np.atan2(vitesse[i] * self.dt, self.rayon[i]) #possible de perfectionner parceque cest surement un peu chelou
             equateur += angle
 
+            satellite.set_position(r=self.rayon[i+1])
             satellite.update_etat(equateur, self.inclinaison)
 
             Bt = champ_mag.calculer_Bt(satellite, dt=self.dt)
@@ -80,85 +91,6 @@ class Orbite:
             i += 1
 
         pbar.close()
-        self.approche = 'energetique'
-        self.puissances = [puissance[1:], puissance_max[1:]]
-        return self.temps[-1] / (24 * 3600)
-
-    def calculer_temps_desorbitation_PFD(self, satellite_magnetique, atmosphere, champ_mag):
-        # Initialisation des variables
-        self.temps = []
-        self.rayon = []
-        vitesse = []
-        acceleration_radiale = []
-        acceleration_tangentielle = []
-        puissance = [0]
-        puissance_max = [0]
-        theta = [0]
-
-        # Conditions de position initiales
-        satellite_magnetique.set_position(r=self.rayon_total)
-        self.rayon.append(self.rayon_total)
-
-        # Conditions de vitesse initiale
-        vitesse.append(np.sqrt(mu_terre / self.rayon[0]))
-        self.temps.append(0)
-        i = 0
-
-        equateur = 0
-        angle_nord_vitesse_initiale = np.pi/2 - self.inclinaison/180*np.pi
-
-        # Calcul de la composante transversale du champ magnétique
-        Bt = champ_mag.calculer_Bt(satellite_magnetique, vitesse=angle_nord_vitesse_initiale)
-
-        # Tant que le satellite n'atteint pas 100 km
-        pbar = tqdm(total=(self.rayon[0] - rayon_terre)//1000 - 100)
-        progress = (self.rayon[0] - rayon_terre)//1000 - 100
-        while self.rayon[i] > (100000 + rayon_terre):
-            # Force gravitationnelle et de trainee
-            force_gravite = -mu_terre / (self.rayon[i] ** 2)
-
-            # Calcul du champ magnétique
-            force_lorentz = (- satellite_magnetique.calculer_Fe(Bt, vitesse[i], Rc=satellite_magnetique.cable.resistance_de_controle)*np.cos(satellite_magnetique.cable.inclinaison_alpha))
-
-            # Calcul de la trainée atmosphérique
-            densite_air = atmosphere.densite[int(self.rayon[i] - rayon_terre)//1000]
-            force_trainee = 0.5 * densite_air * satellite_magnetique.surface * np.power(vitesse[i], 2) * satellite_magnetique.cx
-
-            # Calcul des composantes radiales et tangentielle des forces
-            force_radiale = force_gravite
-            force_tangentielle = force_trainee + force_lorentz
-
-            # Calcul de l'accélération radiale et tangentielle
-            acceleration_radiale.append(force_radiale / satellite_magnetique.mass)
-            acceleration_tangentielle.append(force_tangentielle / satellite_magnetique.mass)
-
-            # Mise à jour de la vitesse et de l'altitude
-            vitesse.append((vitesse[i] + acceleration_tangentielle[i] * self.dt))
-            self.rayon.append(mu_terre/vitesse[i+1]**2)
-            if (delta_progression := progress - ((self.rayon[i+1] - rayon_terre)//1000 - 100)) > 0:
-                progress -= delta_progression
-                pbar.update(delta_progression)
-
-            satellite_magnetique.set_position(r=self.rayon[i+1])
-            angle = np.atan2(vitesse[i] * self.dt, self.rayon[i])  # possible de perfectionner parceque cest surement un peu chelou
-            equateur += angle
-
-            satellite_magnetique.update_etat(equateur, self.inclinaison)
-
-            Bt = champ_mag.calculer_Bt(satellite_magnetique, dt=self.dt)
-            self.temps.append(self.temps[i] + self.dt)
-            theta.append(satellite_magnetique.get_theta())
-
-            vitesse_par_rapport_ch_mag = vitesse[i+1]-2*np.pi*self.rayon[i+1]*np.cos((11.5+self.inclinaison)/180*np.pi)
-            puissance.append(-force_lorentz*vitesse_par_rapport_ch_mag)
-
-            gamma = mu_terre/self.rayon[i+1]**3
-            fd_max = -2.31*gamma*satellite_magnetique.cable.longueur_cable*(satellite_magnetique.cable.mass_ballast + satellite_magnetique.cable.mass/4)
-            puissance_max.append(fd_max*vitesse_par_rapport_ch_mag)
-            i += 1
-
-        pbar.close()
-        self.approche = 'pfd'
         self.puissances = [puissance[1:], puissance_max[1:]]
         return self.temps[-1] / (24 * 3600)
 
