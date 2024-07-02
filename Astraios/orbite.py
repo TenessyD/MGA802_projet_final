@@ -114,7 +114,6 @@ class Orbite:
         pbar = tqdm(total=(self.rayon[0] - rayon_terre)//1000 - 100)
         progress = (self.rayon[0] - rayon_terre)//1000 - 100
         while self.rayon[i] > (100000 + rayon_terre):
-
             # Force gravitationnelle et de trainee
             force_gravite = -mu_terre / (self.rayon[i] ** 2)
 
@@ -140,6 +139,7 @@ class Orbite:
                 progress -= delta_progression
                 pbar.update(delta_progression)
 
+            satellite_magnetique.set_position(r=self.rayon[i+1])
             angle = np.atan2(vitesse[i] * self.dt, self.rayon[i])  # possible de perfectionner parceque cest surement un peu chelou
             equateur += angle
 
