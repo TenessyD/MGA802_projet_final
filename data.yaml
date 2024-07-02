@@ -4,21 +4,13 @@ orbite:
   inclinaison: 0.0           # Inclinaison orbitale en °
   dt: 300
 
-# ---------------------Propriétés des matériaux du cable---------------------
-materiau:                    # matériaux possibles pour le cable
-  copper:
-    densite: 8933.0
-    resistance_lineaire: 0.000000017
-  aluminium:
-    densite: 2700.0
-    resistance_lineaire: 0.0000000274
-
 # ---------------------Caractéristiques du satelitte---------------------
 satelitte_magnetique:
   masse: 1000.0
   surface_de_trainee: 15.0
   cable:
     longueur: 5000.0
-    section: 0.25
+    section: 1.0
     materiau: aluminium
     ballast_mass: 25.0
+    resistance_de_controle: 200

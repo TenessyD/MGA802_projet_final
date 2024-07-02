@@ -6,6 +6,11 @@ mu_terre = 3.986e14
 # Constante représentant le rayon moyen de la Terre en mètres
 rayon_terre = 6.371e6
 
+densite_cuivre = 933.0
+resistance_linéaire_cuivre = 0.000000017
+densite_alu = 2700.0
+resistance_linéaire_alu =0.0000000274
+
 # Enumération des types de manoeuvres possibles
 class Type_manoeuvre(Enum):
     """
@@ -31,4 +36,3 @@ class Position_manoeuvre(Enum):
     """
     apogee = 'apogee',   # Manoeuvre effectuée à l'apogée de l'orbite
     perigee = 'perigee'   # Manoeuvre effectuée au périgée de l'orbite
-

@@ -35,7 +35,7 @@ class Satellite(SpaceBody):
         self.surface = cross_surface      # [m²]
 
 class cable:
-    def __init__(self, longueur_cable, section, materiau, inclinaison_alpha=35.26, mass_ballast = 10):
+    def __init__(self, longueur_cable, section, materiau, inclinaison_alpha=35.26, mass_ballast = 10, Rc = 0):
         self.mass_ballast = mass_ballast
         self.materiau = materiau
         self.longueur_cable = longueur_cable
@@ -44,6 +44,7 @@ class cable:
         self.volume = self.section*self.longueur_cable
         self.resistance = self.materiau.resistance/self.section*self.longueur_cable or 1
         self.inclinaison_alpha = inclinaison_alpha/180*pi
+        self.resistance_de_controle = Rc
 
 class satellite_magnetique(Satellite):
 

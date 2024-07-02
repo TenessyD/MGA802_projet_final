@@ -41,7 +41,7 @@ class Orbite:
         while rayon[i] > (100000 + rayon_terre):
             force_trainee = self.caluler_trainee(atmosphere, satellite, vitesse[i])
             # Calcul force mag
-            force_mag = satellite.calculer_Fe(Bt, vitesse[i])*np.cos(satellite.cable.inclinaison_alpha)
+            force_mag = satellite.calculer_Fe(Bt, vitesse[i], Rc=satellite.cable.resistance_de_controle)*np.cos(satellite.cable.inclinaison_alpha)
             forces = [force_trainee, -force_mag] #force mag le signe t'a capté
 
             k1 = self.dr_dt(satellite, vitesse[i], forces)
@@ -114,7 +114,7 @@ class Orbite:
             force_gravite = -mu_terre / (rayon[i] ** 2)
 
             # Calcul du champ magnétique
-            force_lorentz = (- satellite_magnetique.calculer_Fe(Bt, vitesse[i])*np.cos(satellite_magnetique.cable.inclinaison_alpha))
+            force_lorentz = (- satellite_magnetique.calculer_Fe(Bt, vitesse[i], Rc=satellite_magnetique.cable.resistance_de_controle)*np.cos(satellite_magnetique.cable.inclinaison_alpha))
 
             # Calcul de la trainée atmosphérique
             densite_air = atmosphere.densite[int(rayon[i] - rayon_terre)//1000]
