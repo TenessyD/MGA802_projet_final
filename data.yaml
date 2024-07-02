@@ -1,16 +1,16 @@
 # ---------------------Création de l'orbite initiale---------------------
 orbite:
-  altitude: 200000.0         # Altitude du périgée [m]
+  altitude: 300000.0         # Altitude du périgée [m]
   inclinaison: 0.0           # Inclinaison orbitale en °
-  dt: 300
+  dt: 60
 
 # ---------------------Caractéristiques du satelitte---------------------
 satelitte_magnetique:
-  masse: 1000.0
+  masse: 1000.0 #kg
   surface_de_trainee: 15.0
   cable:
-    longueur: 5000.0
-    section: 1.0
+    longueur: 0 #m
+    section: 0.785 #mm2
     materiau: aluminium
-    ballast_mass: 25.0
-    resistance_de_controle: 200
+    ballast_mass: 25.0 #kg
+    resistance_de_controle: 200 #ohms
