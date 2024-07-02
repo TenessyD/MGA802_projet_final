@@ -5,16 +5,20 @@ from tqdm import tqdm
 
 class Orbite:
     def __init__(self, h, inclinaison=0, dt=1000, temps_simu=800000):
+        self.puissances = None
+        self.rayon = None
         self.rayon_total = h + rayon_terre
         self.dt = dt
         self.inclinaison = inclinaison
         self.temps_simu = temps_simu
         self.erreur = False
+        self.approche = None
 
     def calculer_temps_desorbitation_energie(self, satellite, atmosphere, champ_mag):
         # Initialisation des variables
-        temps = []
-        rayon = []
+        self.temps = []
+        self.rayon = []
+        self.puissances = []
         vitesse = []
         theta = [0]
         puissance = [0]
@@ -22,11 +26,11 @@ class Orbite:
 
         # Conditions de position initiales
         satellite.set_position(r=self.rayon_total)
-        rayon.append(self.rayon_total)
+        self.rayon.append(self.rayon_total)
 
         # Conditions de vitesse initiale
         vitesse.append(self.vitesse_kepler(self.rayon_total))
-        temps.append(0)
+        self.temps.append(0)
 
         # Autres conditions positions initiales
         equateur = 0
@@ -36,50 +40,49 @@ class Orbite:
         i = 0
 
         # Tant que le satellite n'atteint pas 100 km
-        pbar = tqdm(total=(rayon[0] - rayon_terre)//1000 - 100)
-        progress = (rayon[0] - rayon_terre)//1000 - 100
-        while rayon[i] > (100000 + rayon_terre):
+        pbar = tqdm(total=(self.rayon[0] - rayon_terre)//1000 - 100)
+        progress = (self.rayon[0] - rayon_terre)//1000 - 100
+        while self.rayon[i] > (100000 + rayon_terre):
             force_trainee = self.caluler_trainee(atmosphere, satellite, vitesse[i])
             # Calcul force mag
             force_mag = satellite.calculer_Fe(Bt, vitesse[i], Rc=satellite.cable.resistance_de_controle)*np.cos(satellite.cable.inclinaison_alpha)
             forces = [force_trainee, -force_mag] #force mag le signe t'a capté
 
             k1 = self.dr_dt(satellite, vitesse[i], forces)
-            satellite.set_position(r=rayon[i]+k1*self.dt)
+            satellite.set_position(r=self.rayon[i]+k1*self.dt)
             k2 = self.dr_dt(satellite, vitesse[i], forces)
 
-            rayon.append(rayon[i] + (k1 + k2) * self.dt / 2)
-            if (delta_progression := progress - ((rayon[i+1] - rayon_terre)//1000 - 100)) > 0:
+            self.rayon.append(self.rayon[i] + (k1 + k2) * self.dt / 2)
+            if (delta_progression := progress - ((self.rayon[i+1] - rayon_terre)//1000 - 100)) > 0:
                 progress -= delta_progression
                 pbar.update(delta_progression)
 
-            satellite.set_position(r=rayon[i+1])
-            vitesse.append(self.vitesse_kepler(rayon[i+1]))
+            satellite.set_position(r=self.rayon[i+1])
+            vitesse.append(self.vitesse_kepler(self.rayon[i+1]))
 
-            angle = np.atan2(vitesse[i] * self.dt, rayon[i]) #possible de perfectionner parceque cest surement un peu chelou
+            angle = np.atan2(vitesse[i] * self.dt, self.rayon[i]) #possible de perfectionner parceque cest surement un peu chelou
             equateur += angle
 
             satellite.update_etat(equateur, self.inclinaison)
 
             Bt = champ_mag.calculer_Bt(satellite, dt=self.dt)
 
-            vitesse_par_rapport_ch_mag = vitesse[i+1]-2*np.pi*rayon[i+1]*np.cos((11.5+self.inclinaison)/180*np.pi)
+            vitesse_par_rapport_ch_mag = vitesse[i+1]-2*np.pi*self.rayon[i+1]*np.cos((11.5+self.inclinaison)/180*np.pi)
             puissance.append(force_mag*vitesse_par_rapport_ch_mag)
 
-            gamma = mu_terre/rayon[i+1]**3
+            gamma = mu_terre/self.rayon[i+1]**3
             fd_max = -2.31*gamma*satellite.cable.longueur_cable*(satellite.cable.mass_ballast + satellite.cable.mass/4)
             puissance_max.append(fd_max*vitesse_par_rapport_ch_mag)
 
-            temps.append(temps[i] + self.dt)
+            self.temps.append(self.temps[i] + self.dt)
             theta.append(satellite.get_theta())
 
             i += 1
 
         pbar.close()
-        self.afficher_temps_desorbitation(rayon, temps,"energetique")
-        self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
-        # self.afficher_valeur([test], temps)
-        return temps[-1] / (24 * 3600)
+        self.approche = 'energetique'
+        self.puissances = [puissance[1:], puissance_max[1:]]
+        return self.temps[-1] / (24 * 3600)
 
     def calculer_temps_desorbitation_PFD(self, satellite_magnetique, atmosphere, champ_mag):
         # Initialisation des variables
@@ -149,8 +152,8 @@ class Orbite:
             puissance_max.append(fd_max*vitesse_par_rapport_ch_mag)
             i += 1
 
-        self.afficher_temps_desorbitation(rayon, temps,"pfd")
-        self.afficher_valeur([puissance[1:], puissance_max[1:]], temps[1:])
+        self.approche == 'pfd'
+        self.afficher_puissances([puissance[1:], puissance_max[1:]])
         return temps[-1] / (24 * 3600)
 
     def vitesse_kepler(self, h):
@@ -166,33 +169,41 @@ class Orbite:
         dr = - 2 / (mu_terre * satellite.mass) * satellite.get_r() ** 2 * (P_d)
         return dr
 
-    def afficher_temps_desorbitation(self, rayon ,temps,approche):
+    def afficher_temps_desorbitation(self, donnees_sans_cable = False):
         # Affichage des trajectoires
         jour = []
         alt = []
-        for j in range(len(temps)):
-            jour.append(temps[j] / (24 * 3600))
-            alt.append(rayon[j] - rayon_terre)
+        for j in range(len(self.temps)):
+            jour.append(self.temps[j] / (24 * 3600))
+            alt.append(self.rayon[j] - rayon_terre)
         fig = plt.figure()
         ax = fig.add_subplot()
         ax.set_title('Altitude en fonction du temps')
         ax.set_xlabel('Temps [J]')
         ax.set_ylabel('Altitude [m]')
         ax.set_title('Durée de vie du satellite')
-        if (approche == "energetique"):
+        if (self.approche == "energetique"):
             plt.title("Durée de vie du satellite calculée avec l'approche énergétique")
-        elif (approche == "pfd"):
+        elif (self.approche == "pfd"):
             plt.title("Durée de vie du satellite calculée avec le PFD")
         plt.plot(jour, alt)
+        if donnees_sans_cable:
+            donne = np.genfromtxt('data/donne_sans_cable.csv', delimiter=';')
+            temps = donne[:, 0]
+            rayon = donne[:, 1]
+            jour_sc = []
+            for j in range(len(temps)):
+                jour_sc.append(temps[j] / (24 * 3600))
+            plt.plot(jour_sc, rayon)
         plt.grid()
         plt.show()
 
-    def afficher_valeur(self, y, temps):
+    def afficher_puissances(self):
         # Affichage des trajectoires
-        y = np.array(y).transpose()
+        y = np.array(self.puissances).transpose()
         jour = []
-        for j in range(len(temps)):
-            jour.append(temps[j] / (24 * 3600))
+        for j in range(1,len(self.temps)):
+            jour.append(self.temps[j] / (24 * 3600))
         fig = plt.figure()
         ax = fig.add_subplot()
         ax.set_title("Puissance dissipée par l'antenne électromgnétique")
