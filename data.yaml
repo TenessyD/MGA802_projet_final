@@ -1,7 +1,7 @@
 # ---------------------Création de l'orbite initiale---------------------
 orbite:
   altitude: 150000.0         # Altitude du périgée [m]
-  inclinaison: 0.0           # Inclinaison orbitale en °
+  inclinaison: 180.0           # Inclinaison orbitale en °
   dt: 60
 
 # ---------------------Caractéristiques du satelitte---------------------

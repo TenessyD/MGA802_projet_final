@@ -58,7 +58,8 @@ satMag.calcul_des_masses()
 print(f"L'altitude initiale du satellite est {altitude+rayon_terre:0.0f} m")
 print(f'La vitesse initiale du satellite est {orbite.calculer_vitesse_initial():0.2f} m/s-1')
 
-orbite.calculer_temps_desorbitation(satMag, atmosphere_terrestre, champ_magnetique, approche)
+temps_deorb = orbite.calculer_temps_desorbitation(satMag, atmosphere_terrestre, champ_magnetique, approche)
+print(f'Le temps de désorbitation est de {temps_deorb:0.2f} jours.')
 
 if input('Afficher courbe de desorbitation (o/n)') == 'o':
     orbite.afficher_temps_desorbitation(donnees_sans_cable=False)
