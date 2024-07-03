@@ -89,7 +89,7 @@ class satellite_magnetique(Satellite):
         d_theta = theta - old_position[1]
         d_phi = phi - old_position[2]
 
-        self.angle_nord_vitesse = atan2(d_phi, d_theta) #ya erreur jpense
+        self.angle_nord_vitesse = atan2(d_phi, d_theta)
 
     def calcul_des_masses(self):
         print(f'Resistance = {self.cable.resistance} ohms')

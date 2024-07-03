@@ -76,8 +76,8 @@ class champ_mag:
         if phi >=180:
             phi  = phi-360
 
-        [be, bn, bu] = ppigrf.igrf(phi, theta, r, new_date)  # utiliser igrf_gc plutot sauf que igrf_gc cest de la merde
-        # C'est surement des degrés (à revoir donc)
+        [be, bn, bu] = ppigrf.igrf(phi, theta, r, new_date)
+
         self.be = squeeze(be) / 10 ** 9
         self.bn = squeeze(bn) / 10 ** 9
         self.bu = squeeze(bu) / 10 ** 9

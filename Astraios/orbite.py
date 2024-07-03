@@ -2,7 +2,6 @@ from .constantes import *
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-import pandas as pd
 
 class Orbite:
     def __init__(self, h, inclinaison=0, dt=1000, temps_simu=800000):
@@ -66,7 +65,7 @@ class Orbite:
                 progress -= delta_progression
                 pbar.update(delta_progression)
 
-            angle = np.atan2(vitesse[i] * self.dt, self.rayon[i]) #possible de perfectionner parceque cest surement un peu chelou
+            angle = np.atan2(vitesse[i] * self.dt, self.rayon[i])
             equateur += angle
 
             satellite.set_position(r=self.rayon[i+1])

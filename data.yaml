@@ -15,6 +15,7 @@ satelitte_magnetique:
     ballast_mass: 25.0 #kg
     resistance_de_controle: 200 #ohms
 
+# --------------------- Date ---------------------
 date:
   year: 2021
   month: 3

@@ -23,6 +23,7 @@ section = parsed_data['satelitte_magnetique']['cable']['section']
 masse_ballaste = parsed_data['satelitte_magnetique']['cable']['ballast_mass']
 resistance_de_controle = parsed_data['satelitte_magnetique']['cable']['resistance_de_controle']
 
+# --------------------- Date ---------------------
 year = parsed_data['date']['year']
 month = parsed_data['date']['month']
 day = parsed_data['date']['day']
