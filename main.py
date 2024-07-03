@@ -1,6 +1,6 @@
 from datetime import datetime
-from Astraios import *
-from Astraios.LecteurYAML import LecteurYAML
+from frein_magnetique import *
+from frein_magnetique.LecteurYAML import LecteurYAML
 import os
 
 approche = None
@@ -45,13 +45,13 @@ month = parsed_data['date']['month']
 day = parsed_data['date']['day']
 
 date = datetime(year, month, day)
-champ_magnetique = champ_mag(date)
+champ_magnetique = Champ_mag(date)
 atmosphere_terrestre = Atmosphere()
 
-copper = materiau(densite_cuivre, resistance_linéaire_cuivre)
-alu = materiau(densite_alu, resistance_linéaire_alu)
+copper = Materiau(densite_cuivre, resistance_linéaire_cuivre)
+alu = Materiau(densite_alu, resistance_linéaire_alu)
 cable_mag = cable(longueur, section, alu, mass_ballast=masse_ballaste, Rc=resistance_de_controle)
-satMag = satellite_magnetique(masse_satelitte, surface_de_trainee, cable_mag)
+satMag = Satellite_magnetique(masse_satelitte, surface_de_trainee, cable_mag)
 orbite = Orbite(altitude, inclinaison, dt=dt)
 
 satMag.calcul_des_masses()

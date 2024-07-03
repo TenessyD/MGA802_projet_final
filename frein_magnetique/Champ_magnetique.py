@@ -2,10 +2,10 @@ import ppigrf
 from math import cos, sin, pi
 from datetime import timedelta
 from numpy import squeeze
-from .constantes import *
+from .Constantes import *
 
 
-class champ_mag:
+class Champ_mag:
     """
     Classe pour calculer le champ magnétique terrestre ressenti par un satellite.
 
