@@ -3,7 +3,6 @@ from Astraios import *
 from Astraios.LecteurYAML import LecteurYAML
 import os
 
-date = datetime(2021, 3, 28)
 # ---------------------Lecture du YAML---------------------
 whole_path = os.path.join(os.path.abspath(os.path.curdir), "data.yaml")
 parser = LecteurYAML(whole_path)
@@ -24,7 +23,11 @@ section = parsed_data['satelitte_magnetique']['cable']['section']
 masse_ballaste = parsed_data['satelitte_magnetique']['cable']['ballast_mass']
 resistance_de_controle = parsed_data['satelitte_magnetique']['cable']['resistance_de_controle']
 
+year = parsed_data['date']['year']
+month = parsed_data['date']['month']
+day = parsed_data['date']['day']
 
+date = datetime(year, month, day)
 champ_magnetique = champ_mag(date)
 atmosphere_terrestre = Atmosphere()
 

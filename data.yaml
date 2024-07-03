@@ -1,6 +1,6 @@
 # ---------------------Création de l'orbite initiale---------------------
 orbite:
-  altitude: 300000.0         # Altitude du périgée [m]
+  altitude: 150000.0         # Altitude du périgée [m]
   inclinaison: 0.0           # Inclinaison orbitale en °
   dt: 60
 
@@ -14,3 +14,8 @@ satelitte_magnetique:
     materiau: aluminium
     ballast_mass: 25.0 #kg
     resistance_de_controle: 200 #ohms
+
+date:
+  year: 2021
+  month: 3
+  day: 28
