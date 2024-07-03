@@ -92,10 +92,10 @@ class satellite_magnetique(Satellite):
         self.angle_nord_vitesse = atan2(d_phi, d_theta)
 
     def calcul_des_masses(self):
-        print(f'Resistance = {self.cable.resistance} ohms')
+        print(f'Resistance = {self.cable.resistance:0.1f} ohms')
         print(f'Section du cable = {self.cable.section*10**6:0.2f} mm^2')
-        print(f'Masse total satellite = {self.mass} kg')
-        print(f'Masse cable = {self.cable.mass} kg')
+        print(f'Masse total satellite = {self.mass:0.0f} kg')
+        print(f'Masse cable = {self.cable.mass:0.2f} kg')
         masse_cable_systeme = self.cable.mass+self.cable.mass_ballast
-        print(f'Masse cable + systeme de deployement = {masse_cable_systeme} kg')
-        print(f'Pourcentage = {masse_cable_systeme/self.mass*100:0.2f} %')
+        print(f'Masse cable + systeme de deployement = {masse_cable_systeme:0.2f} kg')
+        print(f'Pourcentage de la masse totale = {masse_cable_systeme/self.mass*100:0.2f} %')
