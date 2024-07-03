@@ -50,7 +50,7 @@ atmosphere_terrestre = Atmosphere()
 
 copper = Materiau(densite_cuivre, resistance_linéaire_cuivre)
 alu = Materiau(densite_alu, resistance_linéaire_alu)
-cable_mag = cable(longueur, section, alu, mass_ballast=masse_ballaste, Rc=resistance_de_controle)
+cable_mag = Cable(longueur, section, alu, mass_ballast=masse_ballaste, Rc=resistance_de_controle)
 satMag = Satellite_magnetique(masse_satelitte, surface_de_trainee, cable_mag)
 orbite = Orbite(altitude, inclinaison, dt=dt)
 
