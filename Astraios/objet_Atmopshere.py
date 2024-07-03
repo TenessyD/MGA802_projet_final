@@ -46,7 +46,8 @@ class Atmosphere:
             T = T0 - L * altitude
 
             # Calcul de la pression à l'altitude donnée
-            p = p0 * np.float_power((1 - ((L * altitude) / T0)), g * M / (R * L))
+            a = (1 - ((L * altitude) / T0))
+            p = p0 * np.sign(a) * np.float_power(np.abs(a), g * M / (R * L))
 
             # Calcul de la densité de l'air à l'altitude donnée
             rho = p * M / (R * T)
@@ -91,10 +92,10 @@ class Atmosphere:
         """
 
         fichier_f10_7 = pd.read_excel('data/flux_solaire_data.xlsx')
-        f_10_7 = float(fichier_f10_7[(fichier_f10_7['Année'] == annee) & (fichier_f10_7['Mois'] == mois)]['Flux ajusté'])   # [W.m-2.Hz-1]
+        f_10_7 = float(fichier_f10_7[(fichier_f10_7['Année'] == annee) & (fichier_f10_7['Mois'] == mois)]['Flux ajusté'].iloc[0])   # [W.m-2.Hz-1]
 
         fichier_Ap = pd.read_excel('data/geomagnetic_data_gfz.xlsx')
-        Ap = float(fichier_Ap[(fichier_Ap['year'] == annee) & (fichier_Ap['month'] == mois) & (fichier_Ap['day']==jour) & (fichier_Ap['hour_h']==heure)]['ap'])
+        Ap = float(fichier_Ap[(fichier_Ap['year'] == annee) & (fichier_Ap['month'] == mois) & (fichier_Ap['day']==jour) & (fichier_Ap['hour_h']==heure)]['ap'].iloc[0])
 
         T = 900 + 2.5 * (f_10_7 - 70) + 1.5 * Ap    # [K]
 
