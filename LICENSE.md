@@ -1,4 +1,4 @@
-Astraios © 2024 by Timothée Thomas is licensed under CC BY-NC-SA 4.0 
+frein_magnetique © 2024 by Raphael Barral, Fabien Bertrand, Ténessy De Faria is licensed under CC BY-NC-SA 4.0 
 
 You are free to:  
 Share — copy and redistribute the material in any medium or format  

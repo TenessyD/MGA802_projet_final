@@ -29,7 +29,7 @@ class Orbite:
         self.rayon.append(self.rayon_total)
 
         # Conditions de vitesse initiale
-        vitesse.append(self.vitesse_kepler(self.rayon_total))
+        vitesse.append(self.calculer_vitesse_kepler(self.rayon_total))
         self.temps.append(0)
 
         # Autres conditions positions initiales
@@ -53,7 +53,7 @@ class Orbite:
                 satellite.set_position(r=self.rayon[i]+k1*self.dt)
                 k2 = self.dr_dt(satellite, vitesse[i], forces)
                 nouveau_rayon = self.rayon[i] + (k1 + k2) * self.dt / 2
-                nouvelle_vitesse = self.vitesse_kepler(nouveau_rayon)
+                nouvelle_vitesse = self.calculer_vitesse_kepler(nouveau_rayon)
             elif self.approche == 'pfd':
                 nouvelle_vitesse = vitesse[i] + sum(forces)/satellite.mass * self.dt
                 nouveau_rayon = mu_terre / nouvelle_vitesse ** 2
@@ -89,7 +89,7 @@ class Orbite:
         self.puissances = [puissance[1:], puissance_max[1:]]
         return self.temps[-1] / (24 * 3600)
 
-    def vitesse_kepler(self, h):
+    def calculer_vitesse_kepler(self, h):
         return np.sqrt(mu_terre / h)
 
     def caluler_trainee(self, atmosphere, satellite, vitesse):
@@ -137,21 +137,22 @@ class Orbite:
         plt.show()
 
     def afficher_puissances(self):
-        # Affichage des trajectoires
+
+        # Affichage de la puissance dissipée selon les paramètres du cable
         y = np.array(self.puissances).transpose()
         jour = []
         for j in range(1,len(self.temps)):
             jour.append(self.temps[j] / (24 * 3600))
         fig = plt.figure()
         ax = fig.add_subplot()
-        ax.set_title("Puissance dissipée par l'antenne électromgnétique")
+        ax.set_title("Puissance dissipée par l'antenne électromagnétique")
         ax.set_xlabel('Durée [J]')
         ax.set_ylabel('Puissance [W]')
-        ax.set_title("Puissance dissipée par l'antenne électromgnétique")
-        plt.title("Puissance dissipée par l'antenne électromgnétique")
+        ax.set_title("Puissance dissipée par l'antenne électromagnétique")
+        plt.title("Puissance dissipée par l'antenne électromagnétique")
 
         plt.plot(jour, y[:, 0], label="puissance dissipée par le cable")
-        plt.plot(jour, y[:, 1], label="puissance max à ne pas dépasser")
+        plt.plot(jour, y[:, 1], label="Limite de puissance dissipée")
 
         plt.legend(loc='upper right')
         plt.grid()
@@ -162,4 +163,5 @@ class Orbite:
         return self.vitesse_initial
 
     def save_data(self, filename):
-        np.savetxt(filename, np.asarray([self.temps, self.rayon]).transpose(), delimiter=';')
+        colonnes = "temps ; rayon de l'orbite"
+        np.savetxt(filename, np.asarray([self.temps, self.rayon]).transpose(), delimiter=';',header=colonnes)

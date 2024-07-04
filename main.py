@@ -5,10 +5,10 @@ import os
 
 approche = None
 
-input('Entrez les données dans le fichier data.yaml puis appuyez sur Entrée')
-print('Quelle méthode souhaitez-vous utiliser')
-print('1. Méthode énergétique')
-print('2. Méthode par le principe fondamental de la dynamique (PFD)')
+input("Entrez les paramètres de simulation dans le fichier data.yaml puis appuyez sur 'Entrée'")
+print('Quelle approche souhaitez-vous utiliser pour effectuer les calculs ?')
+print('1. Approche énergétique')
+print('2. Approche basée sur le principe fondamental de la dynamique (PFD)')
 
 while True:
     choix = input()
@@ -54,18 +54,31 @@ cable_mag = Cable(longueur, section, alu, mass_ballast=masse_ballaste, Rc=resist
 satMag = Satellite_magnetique(masse_satelitte, surface_de_trainee, cable_mag)
 orbite = Orbite(altitude, inclinaison, dt=dt)
 
+
 satMag.calcul_des_masses()
-print(f"L'altitude initiale du satellite est {altitude+rayon_terre:0.0f} m")
+print(f"L'altitude initiale du satellite est {altitude:0.0f} m")
 print(f'La vitesse initiale du satellite est {orbite.calculer_vitesse_initial():0.2f} m/s-1')
 
 temps_deorb = orbite.calculer_temps_desorbitation(satMag, atmosphere_terrestre, champ_magnetique, approche)
 print(f'Le temps de désorbitation est de {temps_deorb:0.2f} jours.')
 
-if input('Afficher courbe de desorbitation (o/n)') == 'o':
+if input('Afficher courbe du temps de désorbitation (o/n)') == 'o':
     orbite.afficher_temps_desorbitation(donnees_sans_cable=False)
 
 if input('Afficher courbe de puissance dissipée par le cable (o/n)') == 'o':
     orbite.afficher_puissances()
+
 if filename := input('Entrez le nom du fichier de sortie (Laissez vide pour ne pas sauvegarder les données)'):
+    parametres = {
+        'altitude': [altitude],
+        'inclinaison': [inclinaison],
+        'dt': [dt],
+        'masse_satelitte': [masse_satelitte],
+        'surface_de_trainee': [surface_de_trainee],
+        'longueur_cable': [longueur],
+        'section_cable': [section],
+        'masse_ballaste': [masse_ballaste],
+        'resistance_de_controle': [resistance_de_controle]
+    }
     orbite.save_data(filename)
 
