@@ -1,32 +1,33 @@
-# Astraios : Python deorbit computing 
+# Projet : Modélisation de la vitesse de désorbitation d'un satelitte en LEO doté d'un frein électromagnétique.
 
-Astraios [astrajɔs] : bibliothèque Python conçue pour faciliter le calcul d'orbites et la simulation de la désorbitation de satellites en orbite autour de la Terre. Cette bibliothèque fournit des fonctionnalités pour la modélisation des orbites elliptiques, la réalisation de manoeuvres orbitales, le calcul des paramètres d'orbite et la simulation de la désorbitation de satellites.
+Ce projet a pour objectif d'estimer le temps de désorbitation d'un satellite en orbite basse terrestre en considérant les forces de traînée 
+atmosphérique et électromagnétique agissant sur le satellite. Le dispositif considéré pour bénéficier de la traînée électromagnétique est 
+décrit par l'article [1].
 
 ## Documentation
-Toute la documentation nécessaire à l'utilisation d'Astraios est disponible dans l'onglet `docs` de ce repo GitHub.
-
-Il suffit d'ouvrir le fichier `index.html` du dossier dans `docs/_build/html`. Pour mieux comprendre les enjeux liés à la désorbitation et à la modélisation des interactions en haute atmosphère, les ouvrages [1] à [4] sont cruciaux.
-## Installation 
-
-Vous pouvez installer Astraios en utilisant pip. Assurez-vous d'avoir Python 3.12 d'installé.
-
-```pip install https://github.com/Timotraque/MGA802_projet```
+Toute la documentation nécessaire pour comprendre la structure des modules est disponible dans l'onglet `docs` de ce dépot GitHub.
+Il suffit d'ouvrir le fichier `index.html` du dossier dans `docs/_build/html`.
 
 ## Dépendances 
-
-Astraios a besoin des bibliothèques suivantes :
-
+L'exécution du programme necessite l'installation des bibliothèques suivantes :
 - pandas
 - matplotlib
 - openpyxl
+- ai.cs
+- ppigrf
+- numpy
+- PyYAML
+- tqdm
 
 Elles peuvent être installées automatiquement à l'aide de la commande :  
 ``pip install -r requirements.txt``
 
 ## Utilisation 
-Un exemple d'utilisation est fourni dans le fichier main.py. Il permet de créer une orbite, de l'afficher et 
-d'effectuer des manoeuvres orbitales. En définissant les paramètres d'un satellite, il est également possible de calculer
-sa durée de vie en orbite.
+Avant d'exécuter le programme à partir du fichier 'main.py', il est nécessaire d'entrer les paramètres de la simulation dans le 
+fichier 'data.yaml' en précisant les caractéristiques du satellite et de l'antenne électromagnétique (masse, longueur, cx, etc). 
+Ensuite, l'utilisateur doit indiquer les paramètres de l'orbite initiale ainsi qu'une date pour bénéficier d'un modèle atmosphérique 
+et magnétique fidèle à la réalité. Enfin, il suffit d'indiquer dans la console l'approche souhaitée pour la réalisation des calculs 
+(énergétique ou basée sur le PFD).
 
 ### Objet SpaceBody :
 Le premier objet de cette librairie est 
@@ -95,9 +96,9 @@ densité de l'air en kg/m³. Elle nécessite le calcul préalable de la tempéra
 #### calculer_densites()
 Cette méthode fait appel à la méthode calculer_densite_air() pour remplir un tableau de densite de l'air.
 
-## Bibliographie 
-[1] John Kennewell, “Satellite orbital decay calculations”, Australian Space Weather Agency, 1999  
-[2] Gouv. Canada, “Flux radio du soleil – graphe des moyennes mensuelles”, 2021, disponible sur : https://www.spaceweather.gc.ca/forecast-prevision/solar-solaire/solarflux/sx-6-mavg-fr.php  
-[3] J. Matzka, C. Stolle, Y. Yamazaki, O. Bronkalla et A. Moschhauser, «The geomatgnetic Kp index and derivated indices of geomagnetic activity» [En ligne].   
-[4] King-Hele, D. (1987). "Satellite orbits in an atmosphere: Theory and applications." Blackie. 
-
+## Sources 
+[1] Forward, R. L., Hoyt, R. P., & Uphoff, C. W. (2000). Terminator TetherTM: A spacecraft deorbit device. Journal of Spacecraft and Rockets, 37(2), 187-19.
+[2] Alexander M. Jablonski; DRDC Ottawa TM 2008-097; Defence R&D Canada – Ottawa; June 2008. 
+[3] Victor U. J. Nwankwo, (2021), Atmospheric drag effects on modelled low Earth orbit (LEO) satellites during the July 2000 Bastille Day event in contrast to an interval of geomagnetically quiet condition.
+[4] Dépôt de Timothée Thomas : https://github.com/Timotraque/MGA802_projet
+[5] Dépôt de Thomas Martin : https://github.com/thomasorb/deorb/tree/main
