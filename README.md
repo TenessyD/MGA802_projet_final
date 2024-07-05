@@ -1,4 +1,4 @@
-# Projet : Modélisation de la vitesse de désorbitation d'un satelitte en LEO doté d'un frein électromagnétique.
+# Projet : Modélisation de la vitesse de désorbitation d'un satellite en LEO doté d'un frein électromagnétique.
 
 Ce projet a pour objectif d'estimer le temps de désorbitation d'un satellite en orbite basse terrestre en considérant les forces de traînée 
 atmosphérique et électromagnétique agissant sur le satellite. Le dispositif considéré pour bénéficier de la traînée électromagnétique est 
