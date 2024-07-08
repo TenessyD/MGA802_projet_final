@@ -19,6 +19,7 @@ class Atmosphere:
 
         - Calcul de la température de l'atmosphère.
         - Calcul des densités d'air à différentes altitudes.        """
+
         self.temperature = self.calculer_temperature()
         self.densite = self.calculer_densites()
 

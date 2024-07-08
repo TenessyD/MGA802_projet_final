@@ -1,4 +1,19 @@
-# Ce fichier contient les constantes de la librairie
+"""
+Ce module contient les constantes utilisées dans la librairie de simulation.
+
+Constantes:
+    - mu_terre (float): Paramètre gravitationnel standard de la Terre en m^3/s^2.
+    - rayon_terre (float): Rayon moyen de la Terre en mètres.
+    - densite_cuivre (float): Densité du cuivre en kg/m^3.
+    - resistance_linéaire_cuivre (float): Résistance linéaire du cuivre en ohms par mètre.
+    - densite_alu (float): Densité de l'aluminium en kg/m^3.
+    - resistance_linéaire_alu (float): Résistance linéaire de l'aluminium en ohms par mètre.
+
+Enumérations:
+    - Type_manoeuvre: Types de manoeuvres possibles.
+    - Position_manoeuvre: Positions de manoeuvres possibles.
+"""
+
 from enum import Enum
 
 # Constante représentant le paramètre gravitationnel standard de la Terre en m^3/s^2
