@@ -31,25 +31,25 @@ Il suffit d'ouvrir le fichier `index.html` dans votre nagivateur, ce fichier ce 
 
 ### Classes et méthodes clés :
 
-#### Satellite :
+#### Classe 'Satellite' :
 La classe "Satellite" représente un satellite en orbite autour d'une planète. Cet objet possède des attributs caractéristiques 
 d'un satellite, tels que sa masse en kg, son coefficient de traînée 'cx' (sans dimension) et sa surface transversale en mètres carrés. 
 Le coefficient de traînée est fixé par défaut à 2 si l'utilisateur ne dispose pas de cette donnée pour le satellite sur lequel il 
 souhaite effectuer des simulations.
 
-#### Cable :
+#### Classe 'Cable' :
 La classe "Cable" est utilisée pour instancier un objet représentant le dispositif accroché au satellite pour bénéficier de la traînée électromagnétique,
 le "Terminator Tether". Cet objet possède les attributs caractéristiques du dispositif, à savoir : la longueur du câble en mètres, 
 la masse de ballast en kg, le matériau de fabrication qui est lui-même défini par une densité et une résistance en ohms, ainsi que sa section en m^2.
 
-#### Satellite_magnetique : 
+#### Classe 'Satellite_magnetique' : 
 La sous-classe "Satellite_magnetique" hérite de "Satellite" et est utilisée pour représenter spécifiquement les satellites bénéficiant d'une antenne 
 électromagnétique. En plus des attributs d'un satellite "classique", cette classe possède des attributs supplémentaires tels que l'objet "Cable" 
 vu précédemment et un attribut "position" qui permet de définir, à chaque étape de calcul de trajectoire, les coordonnées du satellite dans l'espace. 
 Contrairement à un satellite classique qui n'est pas impacté par le champ magnétique terrestre, il est nécéssaire de connaitre à chaque instant la position
 d'un satellite magnétique dans l'espace pour calculer la norme du champ auquel il est soumi en un point souhaité et donc, la trainée électromgnétique associée.
 
-### Objet Orbite : 
+#### Classe 'Orbite' : 
 L'objet "Orbite" permet de modéliser les orbites circulaire autour d'un corps céleste, tel que la Terre. 
 Cette classe est utilisée pour définir les paramètres d'une orbite tel que son altitude ou son inclinaison. 
 Elle possède les méthodes grâce auxquelles sont calculées et affichées les temps de désorbitation pour un 
