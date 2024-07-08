@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+
+<html lang="Francais" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>frein_magnetique package &#8212; Désorbitation_Magnétique  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2a1cbc7d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="frein-magnetique-package">
+<h1>frein_magnetique package<a class="headerlink" href="#frein-magnetique-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-frein_magnetique.Atmopshere">
+<span id="frein-magnetique-atmopshere-module"></span><h2>frein_magnetique.Atmopshere module<a class="headerlink" href="#module-frein_magnetique.Atmopshere" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Atmopshere.Atmosphere">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Atmopshere.</span></span><span class="sig-name descname"><span class="pre">Atmosphere</span></span><a class="headerlink" href="#frein_magnetique.Atmopshere.Atmosphere" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe représentant les propriétés de l'atmosphère terrestre.
+Le modèle établit utilise le modèle de Jacchia-Lineberry pour calculer
+la densite de l'atmosphère en ultra-haute altitude. Cet objet permet donc de
+d'obtenir une densité atmospherique pertinente pour le calcul de la trainée induite
+sur le satellite en orbite basse (LEO).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Atmopshere.Atmosphere.temperature">
+<span class="sig-name descname"><span class="pre">temperature</span></span><a class="headerlink" href="#frein_magnetique.Atmopshere.Atmosphere.temperature" title="Link to this definition">¶</a></dt>
+<dd><p>Température de l'atmosphère terrestre (en Kelvin).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Atmopshere.Atmosphere.densite">
+<span class="sig-name descname"><span class="pre">densite</span></span><a class="headerlink" href="#frein_magnetique.Atmopshere.Atmosphere.densite" title="Link to this definition">¶</a></dt>
+<dd><p>Liste des densités de l'air à différentes altitudes (en kg/m^3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Atmopshere.Atmosphere.calculer_densite_air">
+<span class="sig-name descname"><span class="pre">calculer_densite_air</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">altitude</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Atmopshere.Atmosphere.calculer_densite_air" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la densité de l'air à une altitude donnée, repose sur un modèle d'atmosphère jusqu'à 100km et un modèle
+au delà de 100km d'altitude (pertinent jusqu'à environ 1000km). Voir bibliographie pour plus d'informations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>altitude</strong> (<em>int</em>) -- Altitude à laquelle calculer la densité (en mètres).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Densité de l'air à l'altitude donnée (en kg/m^3).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rho (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Atmopshere.Atmosphere.calculer_densites">
+<span class="sig-name descname"><span class="pre">calculer_densites</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Atmopshere.Atmosphere.calculer_densites" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule les densités de l'air à différentes altitudes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Liste des densités de l'air à différentes altitudes (en kg/m^3).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>densites_air (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Atmopshere.Atmosphere.calculer_temperature">
+<span class="sig-name descname"><span class="pre">calculer_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annee</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2023</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mois</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Atmopshere.Atmosphere.calculer_temperature" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la température de l'atmosphère terrestre.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annee</strong> (<em>int</em>) -- Année pour laquelle calculer la température (par défaut 2023).</p></li>
+<li><p><strong>mois</strong> (<em>int</em>) -- Mois pour lequel calculer la température, commençant par 1 = janvier jusqu'à 12 = décembre (par défaut 4).</p></li>
+<li><p><strong>jour</strong> (<em>int</em>) -- Jour pour lequel calculer la température, commençant par 1 jusqu'à 31 suivant les mois (par défaut 1).</p></li>
+<li><p><strong>heure</strong> (<em>float</em>) -- Heure du jour pour laquelle calculer la température, de 0.0 à 23.5 (par défaut 0.0).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Température de l'atmosphère terrestre (en Kelvin).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>T (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-frein_magnetique.Champ_magnetique">
+<span id="frein-magnetique-champ-magnetique-module"></span><h2>frein_magnetique.Champ_magnetique module<a class="headerlink" href="#module-frein_magnetique.Champ_magnetique" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Champ_magnetique.</span></span><span class="sig-name descname"><span class="pre">Champ_mag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe pour calculer le champ magnétique terrestre ressenti par un satellite.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag.date">
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag.date" title="Link to this definition">¶</a></dt>
+<dd><p>La date initiale pour les calculs du champ magnétique.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime.date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag.dt" title="Link to this definition">¶</a></dt>
+<dd><p>Le temps écoulé depuis la date initiale, en secondes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag.be">
+<span class="sig-name descname"><span class="pre">be</span></span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag.be" title="Link to this definition">¶</a></dt>
+<dd><p>La composante est du champ magnétique en Tesla.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag.bn">
+<span class="sig-name descname"><span class="pre">bn</span></span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag.bn" title="Link to this definition">¶</a></dt>
+<dd><p>La composante nord du champ magnétique en Tesla.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag.bu">
+<span class="sig-name descname"><span class="pre">bu</span></span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag.bu" title="Link to this definition">¶</a></dt>
+<dd><p>La composante radiale du champ magnétique en Tesla.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag.bt">
+<span class="sig-name descname"><span class="pre">bt</span></span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag.bt" title="Link to this definition">¶</a></dt>
+<dd><p>La composante tangente du champ magnétique en Tesla.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Champ_magnetique.Champ_mag.calculer_Bt">
+<span class="sig-name descname"><span class="pre">calculer_Bt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitesse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Champ_magnetique.Champ_mag.calculer_Bt" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la composante tangente du champ magnétique en fonction de la position
+et de la vitesse angulaire du satellite.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">calculer_Bt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitesse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la composante tangente du champ magnétique en fonction de la position
+et de la vitesse angulaire du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>satellite</strong> (<em>object</em>) -- Objet représentant le satellite avec les méthodes get_r, get_theta, et get_phi
+qui retournent respectivement le rayon, l'angle polaire et l'angle azimutal
+du satellite.</p></li>
+<li><p><strong>dt</strong> (<em>int</em><em>, </em><em>optional</em>) -- Temps écoulé en secondes à ajouter à <cite>self.dt</cite> (default is 0).</p></li>
+<li><p><strong>vitesse</strong> (<em>float</em><em>, </em><em>optional</em>) -- Vitesse angulaire du satellite par rapport au nord (default is None).
+Si None, utilise <cite>satellite.angle_nord_vitesse</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>La composante tangente du champ magnétique en Tesla.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-frein_magnetique.Constantes">
+<span id="frein-magnetique-constantes-module"></span><h2>frein_magnetique.Constantes module<a class="headerlink" href="#module-frein_magnetique.Constantes" title="Link to this heading">¶</a></h2>
+<p>Ce module contient les constantes utilisées dans la librairie de simulation.</p>
+<dl class="simple">
+<dt>Constantes:</dt><dd><ul class="simple">
+<li><p>mu_terre (float): Paramètre gravitationnel standard de la Terre en m^3/s^2.</p></li>
+<li><p>rayon_terre (float): Rayon moyen de la Terre en mètres.</p></li>
+<li><p>densite_cuivre (float): Densité du cuivre en kg/m^3.</p></li>
+<li><p>resistance_linéaire_cuivre (float): Résistance linéaire du cuivre en ohms par mètre.</p></li>
+<li><p>densite_alu (float): Densité de l'aluminium en kg/m^3.</p></li>
+<li><p>resistance_linéaire_alu (float): Résistance linéaire de l'aluminium en ohms par mètre.</p></li>
+</ul>
+</dd>
+<dt>Enumérations:</dt><dd><ul class="simple">
+<li><p>Type_manoeuvre: Types de manoeuvres possibles.</p></li>
+<li><p>Position_manoeuvre: Positions de manoeuvres possibles.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Constantes.Position_manoeuvre">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Constantes.</span></span><span class="sig-name descname"><span class="pre">Position_manoeuvre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Constantes.Position_manoeuvre" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Enumération des positions de manoeuvres possibles.</p>
+<dl class="simple">
+<dt>Les positions de manoeuvres possibles sont:</dt><dd><ul class="simple">
+<li><p>'apogee': Manoeuvre effectuée à l'apogée de l'orbite.</p></li>
+<li><p>'perigee': Manoeuvre effectuée au périgée de l'orbite.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Constantes.Position_manoeuvre.apogee">
+<span class="sig-name descname"><span class="pre">apogee</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('apogee',)</span></em><a class="headerlink" href="#frein_magnetique.Constantes.Position_manoeuvre.apogee" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Constantes.Position_manoeuvre.perigee">
+<span class="sig-name descname"><span class="pre">perigee</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'perigee'</span></em><a class="headerlink" href="#frein_magnetique.Constantes.Position_manoeuvre.perigee" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Constantes.Type_manoeuvre">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Constantes.</span></span><span class="sig-name descname"><span class="pre">Type_manoeuvre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Constantes.Type_manoeuvre" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Enumération des types de manoeuvres possibles.</p>
+<dl class="simple">
+<dt>Les types de manoeuvres possibles sont:</dt><dd><ul class="simple">
+<li><p>'prograde': Manoeuvre dans le sens direct de l'orbite.</p></li>
+<li><p>'retrograde': Manoeuvre dans le sens rétrograde de l'orbite.</p></li>
+<li><p>'radiale': Manoeuvre radiale, orientée vers ou à partir du centre de la Terre.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Constantes.Type_manoeuvre.prograde">
+<span class="sig-name descname"><span class="pre">prograde</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('prograde',)</span></em><a class="headerlink" href="#frein_magnetique.Constantes.Type_manoeuvre.prograde" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Constantes.Type_manoeuvre.radiale">
+<span class="sig-name descname"><span class="pre">radiale</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'radiale'</span></em><a class="headerlink" href="#frein_magnetique.Constantes.Type_manoeuvre.radiale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Constantes.Type_manoeuvre.retrograde">
+<span class="sig-name descname"><span class="pre">retrograde</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('retrograde',)</span></em><a class="headerlink" href="#frein_magnetique.Constantes.Type_manoeuvre.retrograde" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-frein_magnetique.LecteurYAML">
+<span id="frein-magnetique-lecteuryaml-module"></span><h2>frein_magnetique.LecteurYAML module<a class="headerlink" href="#module-frein_magnetique.LecteurYAML" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.LecteurYAML.LecteurYAML">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.LecteurYAML.</span></span><span class="sig-name descname"><span class="pre">LecteurYAML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.LecteurYAML.LecteurYAML" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.LecteurYAML.LecteurYAML.read_yaml">
+<span class="sig-name descname"><span class="pre">read_yaml</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.LecteurYAML.LecteurYAML.read_yaml" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-frein_magnetique.Materiau">
+<span id="frein-magnetique-materiau-module"></span><h2>frein_magnetique.Materiau module<a class="headerlink" href="#module-frein_magnetique.Materiau" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Materiau.Materiau">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Materiau.</span></span><span class="sig-name descname"><span class="pre">Materiau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">densite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resistance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Materiau.Materiau" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe représentant un matériau avec sa densité et sa résistance linéaire.</p>
+<dl class="simple">
+<dt>Attributs:</dt><dd><p>densite (float): La densité du matériau en kg/m^3.
+resistance (float): La résistance linéaire du matériau en ohms par mètre.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-frein_magnetique.Orbite">
+<span id="frein-magnetique-orbite-module"></span><h2>frein_magnetique.Orbite module<a class="headerlink" href="#module-frein_magnetique.Orbite" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Orbite.</span></span><span class="sig-name descname"><span class="pre">Orbite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inclinaison</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temps_simu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">800000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe représentant une orbite et permettant de calculer le temps de désorbitation d'un satellite.</p>
+<dl class="simple">
+<dt>Attributs:</dt><dd><p>puissances (list): Liste des puissances calculées lors de la simulation.
+rayon (list): Liste des rayons de l'orbite à différents instants.
+temps (list): Liste des temps de la simulation.
+rayon_total (float): Rayon total de l'orbite (altitude + rayon de la Terre).
+dt (float): Intervalle de temps entre chaque étape de la simulation.
+inclinaison (float): Inclinaison de l'orbite en degrés.
+temps_simu (float): Durée totale de la simulation en secondes.
+approche (str): Approche utilisée pour les calculs ('energetique' ou 'pfd').</p>
+</dd>
+<dt>Méthodes:</dt><dd><p>__init__(self, h, inclinaison=0, dt=1000, temps_simu=800000): Initialise une instance de la classe Orbite.
+calculer_temps_desorbitation(self, satellite, atmosphere, champ_mag, approche): Calcule le temps de désorbitation du satellite.
+calculer_vitesse_kepler(self, h): Calcule la vitesse selon la loi de Kepler pour un rayon donné.
+caluler_trainee(self, atmosphere, satellite, vitesse): Calcule la force de traînée atmosphérique sur le satellite.
+dr_dt(self, satellite, vitesse, force): Calcule le taux de changement de rayon de l'orbite.
+afficher_temps_desorbitation(self, donnees_sans_cable=False): Affiche l'altitude en fonction du temps.
+afficher_puissances(self): Affiche la puissance dissipée par le câble magnétique.
+calculer_vitesse_initial(self): Calcule la vitesse initiale du satellite.
+save_data(self, filename): Sauvegarde les données de simulation dans un fichier.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.afficher_puissances">
+<span class="sig-name descname"><span class="pre">afficher_puissances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.afficher_puissances" title="Link to this definition">¶</a></dt>
+<dd><p>Affiche un graphique de la puissance dissipée par le câble en fonction du temps.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.afficher_temps_desorbitation">
+<span class="sig-name descname"><span class="pre">afficher_temps_desorbitation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">donnees_sans_cable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.afficher_temps_desorbitation" title="Link to this definition">¶</a></dt>
+<dd><p>Affiche l'altitude en fonction du temps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>donnees_sans_cable</strong> (<em>bool</em>) -- Si True, affiche les données de simulation sans câble.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.calculer_temps_desorbitation">
+<span class="sig-name descname"><span class="pre">calculer_temps_desorbitation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atmosphere</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">champ_mag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approche</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.calculer_temps_desorbitation" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule le temps de désorbitation du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>satellite</strong> (<a class="reference internal" href="#frein_magnetique.Satellite_mag.Satellite" title="frein_magnetique.Satellite_mag.Satellite"><em>Satellite</em></a>) -- Instance de la classe Satellite_magnetique.</p></li>
+<li><p><strong>atmosphere</strong> (<a class="reference internal" href="#frein_magnetique.Atmopshere.Atmosphere" title="frein_magnetique.Atmopshere.Atmosphere"><em>Atmosphere</em></a>) -- Instance de la classe Atmosphere.</p></li>
+<li><p><strong>champ_mag</strong> (<a class="reference internal" href="#frein_magnetique.Champ_magnetique.Champ_mag" title="frein_magnetique.Champ_magnetique.Champ_mag"><em>Champ_mag</em></a>) -- Instance de la classe Champ_mag.</p></li>
+<li><p><strong>approche</strong> (<em>str</em>) -- Approche utilisée pour les calculs ('energetique' ou 'pfd').</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Temps de désorbitation en jours.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.calculer_vitesse_initial">
+<span class="sig-name descname"><span class="pre">calculer_vitesse_initial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.calculer_vitesse_initial" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la vitesse initiale du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vitesse initiale en m/s.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.calculer_vitesse_kepler">
+<span class="sig-name descname"><span class="pre">calculer_vitesse_kepler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.calculer_vitesse_kepler" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la vitesse selon la loi de Kepler pour un rayon donné.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>h</strong> (<em>float</em>) -- Rayon de l'orbite en mètres.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vitesse en m/s.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.caluler_trainee">
+<span class="sig-name descname"><span class="pre">caluler_trainee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atmosphere</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">satellite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitesse</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.caluler_trainee" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la force de traînée atmosphérique sur le satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atmosphere</strong> (<a class="reference internal" href="#frein_magnetique.Atmopshere.Atmosphere" title="frein_magnetique.Atmopshere.Atmosphere"><em>Atmosphere</em></a>) -- Instance de la classe Atmosphere.</p></li>
+<li><p><strong>satellite</strong> (<a class="reference internal" href="#frein_magnetique.Satellite_mag.Satellite" title="frein_magnetique.Satellite_mag.Satellite"><em>Satellite</em></a>) -- Instance de la classe Satellite_magnetique.</p></li>
+<li><p><strong>vitesse</strong> (<em>float</em>) -- Vitesse du satellite en m/s.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Force de traînée en newtons.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.dr_dt">
+<span class="sig-name descname"><span class="pre">dr_dt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitesse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.dr_dt" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule le taux de changement de rayon de l'orbite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>satellite</strong> (<a class="reference internal" href="#frein_magnetique.Satellite_mag.Satellite" title="frein_magnetique.Satellite_mag.Satellite"><em>Satellite</em></a>) -- Instance de la classe Satellite_magnetique.</p></li>
+<li><p><strong>vitesse</strong> (<em>float</em>) -- Vitesse du satellite en m/s.</p></li>
+<li><p><strong>force</strong> (<em>list</em>) -- Liste des forces agissant sur le satellite.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Taux de changement de rayon en m/s.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Orbite.Orbite.save_data">
+<span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Orbite.Orbite.save_data" title="Link to this definition">¶</a></dt>
+<dd><p>Sauvegarde les données de simulation dans un fichier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- Nom du fichier dans lequel les données seront sauvegardées.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-frein_magnetique.Satellite_mag">
+<span id="frein-magnetique-satellite-mag-module"></span><h2>frein_magnetique.Satellite_mag module<a class="headerlink" href="#module-frein_magnetique.Satellite_mag" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Cable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Satellite_mag.</span></span><span class="sig-name descname"><span class="pre">Cable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">longueur_cable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materiau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inclinaison_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.26</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ballast</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Cable" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Représente un câble utilisé par un satellite.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Cable.longueur_cable">
+<span class="sig-name descname"><span class="pre">longueur_cable</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Cable.longueur_cable" title="Link to this definition">¶</a></dt>
+<dd><p>La longueur du câble en mètres.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Cable.section">
+<span class="sig-name descname"><span class="pre">section</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Cable.section" title="Link to this definition">¶</a></dt>
+<dd><p>La section transversale du câble en mètres carrés.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Cable.materiau">
+<span class="sig-name descname"><span class="pre">materiau</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Cable.materiau" title="Link to this definition">¶</a></dt>
+<dd><p>Le matériau dont est composé le câble.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#frein_magnetique.Materiau.Materiau" title="frein_magnetique.Materiau.Materiau">Materiau</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Cable.inclinaison_alpha">
+<span class="sig-name descname"><span class="pre">inclinaison_alpha</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Cable.inclinaison_alpha" title="Link to this definition">¶</a></dt>
+<dd><p>L'inclinaison du câble en degrés.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Cable.mass_ballast">
+<span class="sig-name descname"><span class="pre">mass_ballast</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Cable.mass_ballast" title="Link to this definition">¶</a></dt>
+<dd><p>La masse du ballast en kilogrammes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Cable.resistance_de_controle">
+<span class="sig-name descname"><span class="pre">resistance_de_controle</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Cable.resistance_de_controle" title="Link to this definition">¶</a></dt>
+<dd><p>La résistance de contrôle en ohms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Satellite_mag.</span></span><span class="sig-name descname"><span class="pre">Satellite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#frein_magnetique.Satellite_mag.SpaceBody" title="frein_magnetique.Satellite_mag.SpaceBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpaceBody</span></code></a></p>
+<p>Représente un satellite en orbite autour d'un corps céleste.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite.mass">
+<span class="sig-name descname"><span class="pre">mass</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite.mass" title="Link to this definition">¶</a></dt>
+<dd><p>La masse du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite.cx">
+<span class="sig-name descname"><span class="pre">cx</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite.cx" title="Link to this definition">¶</a></dt>
+<dd><p>Le coefficient de traînée sans dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite.surface" title="Link to this definition">¶</a></dt>
+<dd><p>La surface transversale du satellite en mètres carrés.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Satellite_mag.</span></span><span class="sig-name descname"><span class="pre">Satellite_magnetique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#frein_magnetique.Satellite_mag.Satellite" title="frein_magnetique.Satellite_mag.Satellite"><code class="xref py py-class docutils literal notranslate"><span class="pre">Satellite</span></code></a></p>
+<p>Représente un satellite équipé d'un câble pour freinage magnétique.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.cable">
+<span class="sig-name descname"><span class="pre">cable</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.cable" title="Link to this definition">¶</a></dt>
+<dd><p>Le câble utilisé par le satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#frein_magnetique.Satellite_mag.Cable" title="frein_magnetique.Satellite_mag.Cable">Cable</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.position">
+<span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.position" title="Link to this definition">¶</a></dt>
+<dd><p>La position du satellite en coordonnées sphériques [r, theta, phi].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.angle_nord_vitesse">
+<span class="sig-name descname"><span class="pre">angle_nord_vitesse</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.angle_nord_vitesse" title="Link to this definition">¶</a></dt>
+<dd><p>L'angle entre la vitesse et le nord.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.calcul_des_masses">
+<span class="sig-name descname"><span class="pre">calcul_des_masses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.calcul_des_masses" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule et affiche les différentes masses et résistances du satellite et du câble.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.calculer_Fe">
+<span class="sig-name descname"><span class="pre">calculer_Fe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Bt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.calculer_Fe" title="Link to this definition">¶</a></dt>
+<dd><p>Calcule la force électromagnétique exercée sur le satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Bt</strong> (<em>float</em>) -- L'induction magnétique en teslas.</p></li>
+<li><p><strong>Vo</strong> (<em>float</em>) -- La vitesse du satellite en m/s.</p></li>
+<li><p><strong>Rc</strong> (<em>float</em><em>, </em><em>optional</em>) -- La résistance de contrôle en ohms (par défaut 0).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>La force électromagnétique en newtons.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.get_phi">
+<span class="sig-name descname"><span class="pre">get_phi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.get_phi" title="Link to this definition">¶</a></dt>
+<dd><p>Obtient l'angle azimutal du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>L'angle azimutal en radians.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.get_r">
+<span class="sig-name descname"><span class="pre">get_r</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.get_r" title="Link to this definition">¶</a></dt>
+<dd><p>Obtient la distance radiale du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>La distance radiale en mètres.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.get_theta">
+<span class="sig-name descname"><span class="pre">get_theta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.get_theta" title="Link to this definition">¶</a></dt>
+<dd><p>Obtient l'angle polaire du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>L'angle polaire en radians.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.set_position">
+<span class="sig-name descname"><span class="pre">set_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.set_position" title="Link to this definition">¶</a></dt>
+<dd><p>Définit la position du satellite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em><em>, </em><em>optional</em>) -- La distance radiale en mètres.</p></li>
+<li><p><strong>theta</strong> (<em>float</em><em>, </em><em>optional</em>) -- L'angle polaire en radians.</p></li>
+<li><p><strong>phi</strong> (<em>float</em><em>, </em><em>optional</em>) -- L'angle azimutal en radians.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.Satellite_magnetique.update_etat">
+<span class="sig-name descname"><span class="pre">update_etat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_sur_equateur</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inclinaison_orbite</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.Satellite_magnetique.update_etat" title="Link to this definition">¶</a></dt>
+<dd><p>Met à jour l'état du satellite en fonction de sa position sur l'équateur et de l'inclinaison de l'orbite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position_sur_equateur</strong> (<em>float</em>) -- La position sur l'équateur en radians.</p></li>
+<li><p><strong>inclinaison_orbite</strong> (<em>float</em>) -- L'inclinaison de l'orbite en degrés.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.SpaceBody">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frein_magnetique.Satellite_mag.</span></span><span class="sig-name descname"><span class="pre">SpaceBody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frein_magnetique.Satellite_mag.SpaceBody" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Représente un corps céleste générique.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frein_magnetique.Satellite_mag.SpaceBody.mass">
+<span class="sig-name descname"><span class="pre">mass</span></span><a class="headerlink" href="#frein_magnetique.Satellite_mag.SpaceBody.mass" title="Link to this definition">¶</a></dt>
+<dd><p>La masse du corps céleste.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-frein_magnetique">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-frein_magnetique" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Désorbitation_Magnétique</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Raphaël Barral.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/frein_magnetique.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
