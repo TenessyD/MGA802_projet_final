@@ -27,7 +27,7 @@ et magnétique fidèle à la réalité. Enfin, il suffit d'indiquer dans la cons
 
 ## Documentation
 Toute la documentation nécessaire pour comprendre la structure des modules est disponible dans l'onglet `docs` de ce dépot GitHub.
-Vous pouvez y accéder en cliquant [ici](https://htmlpreview.github.io/?https://github.com/tenessy26/MGA802_projet_final/blob/main/build/html/index.html).
+Vous pouvez y accéder en cliquant [ici](https://html-preview.github.io/?https://github.com/tenessy26/MGA802_projet_final/blob/main/build/html/index.html).
 
 ### Classes et méthodes clés :
 
