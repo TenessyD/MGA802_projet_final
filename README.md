@@ -4,10 +4,6 @@ Ce projet a pour objectif d'estimer le temps de désorbitation d'un satellite en
 atmosphérique et électromagnétique agissant sur le satellite. Le dispositif considéré pour bénéficier de la traînée électromagnétique est 
 décrit par l'article [1].
 
-## Documentation
-Toute la documentation nécessaire pour comprendre la structure des modules est disponible dans l'onglet `docs` de ce dépot GitHub.
-Il suffit d'ouvrir le fichier `index.html` du dossier dans `docs/_build/html`.
-
 ## Dépendances 
 L'exécution du programme necessite l'installation des bibliothèques suivantes :
 - pandas
@@ -29,57 +25,52 @@ Ensuite, l'utilisateur doit indiquer les paramètres de l'orbite initiale ainsi 
 et magnétique fidèle à la réalité. Enfin, il suffit d'indiquer dans la console l'approche souhaitée pour la réalisation des calculs 
 (énergétique ou basée sur le PFD).
 
-### Objet SpaceBody :
-Le premier objet de cette librairie est 
-L'objet `SpaceBody` est une classe de base utilisée dans la bibliothèque Astraios pour représenter divers corps célestes
-tels que les planètes, les satellites et d'autres éléments naturels ou artificiels en orbite. Cette classe contient 
-notamment un argument `mass` qui représente la masse du corps. Seuls les corps célestes de type 'SpaceBody' peuvent utiliser 
-la méthode Two_body_problem().
+## Documentation
+Toute la documentation nécessaire pour comprendre la structure des modules est disponible dans l'onglet `docs` de ce dépot GitHub.
+Il suffit d'ouvrir le fichier `index.html` dans votre nagivateur, ce fichier ce trouve dans le dossier `build/html`.
 
-#### Planet 
-La sous-classe `Planet` hérite de `SpaceBody` et est utilisée pour représenter spécifiquement une planète dans le système. 
-En plus de la masse héritée, cette classe a des attributs supplémentaires tels que `radius` pour le rayon de la planète 
-en mètres et `color` pour la couleur utilisée dans les visualisations.
+### Classes et méthodes clés :
 
-#### Satellite 
-La sous-classe `Satellite` hérite également de `SpaceBody` et est utilisée pour représenter un satellite en orbite autour
-d'une planète ou d'une autre entité céleste. En plus de la masse héritée, cette classe a des attributs supplémentaires 
-tels que `cx` pour le coefficient de traînée sans dimension et `surface` pour la surface transversale du satellite en mètres carrés.
-Habituellement, un satellite possède un coefficient de traînée de 2 si il n'a pas été évalué lors de la phase de conception.
+#### Satellite :
+La classe "Satellite" représente un satellite en orbite autour d'une planète. Cet objet possède des attributs caractéristiques 
+d'un satellite, tels que sa masse en kg, son coefficient de traînée 'cx' (sans dimension) et sa surface transversale en mètres carrés. 
+Le coefficient de traînée est fixé par défaut à 2 si l'utilisateur ne dispose pas de cette donnée pour le satellite sur lequel il 
+souhaite effectuer des simulations.
 
-### Objet Orbit : 
-L'objet `Orbit` est une classe centrale dans la bibliothèque Astraios qui permet de modéliser les orbites elliptiques 
-autour d'un corps céleste, tel que la Terre. Cette classe est utilisée pour définir les paramètres d'une orbite, effectuer
-des manoeuvres orbitales et simuler la désorbitation d'un satellite. Toute étape du programme nécessitant des calculs (trajectoire,
-vitesse) doit utiliser cet objet et ces méthodes.
+#### Cable :
+La classe "Cable" est utilisée pour instancier un objet représentant le dispositif accroché au satellite pour bénéficier de la traînée électromagnétique,
+le "Terminator Tether". Cet objet possède les attributs caractéristiques du dispositif, à savoir : la longueur du câble en mètres, 
+la masse de ballast en kg, le matériau de fabrication qui est lui-même défini par une densité et une résistance en ohms, ainsi que sa section en m^2.
 
-#### init() 
-Le constructeur de la classe `Orbit` permet d'initialiser un objet orbite avec les paramètres spécifiés :
-- `perigee` : Altitude du périgée en mètres.
-- `apogee` : Altitude de l'apogée en mètres.
-- `inclinaison` : Inclinaison de l'orbite en degrés (par défaut 0).
-- `dt` : Intervalle de temps pour la simulation en secondes (par défaut 1000).
-- `temps_simu` : Durée de la simulation en secondes (par défaut 800000).
+#### Satellite_magnetique : 
+La sous-classe "Satellite_magnetique" hérite de "Satellite" et est utilisée pour représenter spécifiquement les satellites bénéficiant d'une antenne 
+électromagnétique. En plus des attributs d'un satellite "classique", cette classe possède des attributs supplémentaires tels que l'objet "Cable" 
+vu précédemment et un attribut "position" qui permet de définir, à chaque étape de calcul de trajectoire, les coordonnées du satellite dans l'espace. 
+Contrairement à un satellite classique qui n'est pas impacté par le champ magnétique terrestre, il est nécéssaire de connaitre à chaque instant la position
+d'un satellite magnétique dans l'espace pour calculer la norme du champ auquel il est soumi en un point souhaité et donc, la trainée électromgnétique associée.
 
-#### plot_orbit()
-Cette méthode permet de tracer l'orbite elliptique dans un système de coordonnées tridimensionnel. Elle affiche également le périgée et l'apogée de l'orbite.
+### Objet Orbite : 
+L'objet "Orbite" permet de modéliser les orbites circulaire autour d'un corps céleste, tel que la Terre. 
+Cette classe est utilisée pour définir les paramètres d'une orbite tel que son altitude ou son inclinaison. 
+Elle possède les méthodes grâce auxquelles sont calculées et affichées les temps de désorbitation pour un 
+satellite donnée. Elle possède donc un 3ème attribut 'dt' correspondant à l'intervalle de temps entre chaque nouveau calcul
+de trajectoire avec l'approche énergétique et/ou basé sur le PFD. 
+Toute étape du programme nécessitant des calculs (norme d'une force, trajectoire, vitesse) utilise cet objet et ces méthodes.
 
-#### manoeuvre()
-La méthode `manoeuvre` permet d'effectuer une manoeuvre orbitale en modifiant la vitesse orbitale du satellite. Les paramètres de la manoeuvre sont spécifiés comme suit :
-- `delta_v` : Changement de vitesse en mètres par seconde.
-- `direction` : Direction de la manoeuvre ('prograde', 'retrograde' ou 'radiale').
-- `position` : Position de la manoeuvre ('perigee' ou 'apogee').
-
-#### desorbitation()
-La méthode `desorbitation` simule la désorbitation du satellite en orbite. Elle calcule la trajectoire du satellite en tenant compte de la force gravitationnelle, de la traînée atmosphérique et éventuellement d'une propulsion supplémentaire. Les paramètres de la désorbitation sont spécifiés comme suit :
+#### calculer_temps_desorbitation(self, satellite, atmosphere, champ_mag, approche)
+La méthode "calculer_temps_desorbitation()" simule la désorbitation du satellite magnétique en orbite. Elle possède un paramètre "approche"
+permettant de calculer la trajectoire du satellite à chaque intervalle de temps "dt" basée sur une approche énergétique (th. de l'énergie mécanique)
+ou sur une approche basée sur PFD (seconde loi de Newton). Elle considère la force gravitationnelle, la traînée atmosphérique et magnétique. Cette méthode
+possède une boucle sur qui calcule à chaque itération le rayon de la nouvelle orbite calculée à chaque intervalle de temps 'dt'.
+Les paramètres de la désorbitation sont spécifiés comme suit :
 - `satellite` : Instance de la classe `Satellite` représentant le satellite en orbite.
-- `position` : Position de la manoeuvre de désorbitation ('perigee' ou 'apogee').
 - `atmosphere` : Instance de la classe `Atmosphere` représentant l'atmosphère terrestre.
-- `plot_orbit` : Optionnel, si True, affiche la trajectoire du satellite en orbite (par défaut False).
-- `force_propulsion` : Optionnel, force de propulsion supplémentaire en newtons (par défaut 0).
+- `champ_mag` : Instance de la classe `ChampMagnetque` représentant un modèle du champ magnétque terrestre.
+- `approche` : Permet de spécifier l'approche souhaitée pour les calculs.
 
 ### Objet Atmosphere :
-L'objet `Atmosphere` est une classe utilisée dans la bibliothèque Astraios pour modéliser l'atmosphère terrestre. 
+L'objet "Atmosphere" est issu de la bibliothèque "Astraios" écrite par Timothée Thomas, il modélise l'atmosphère terrestre. 
+Ce dépôt est accessible à l'adresse suivante : https://github.com/Timotraque/MGA802_projet.
 Cette classe fournit des fonctionnalités pour calculer la température et la densité de l'air à différentes altitudes.
 Ce modèle d'atmosphère utilise principalement celui de Jacchia-Lineberry [1].
 
@@ -95,6 +86,7 @@ densité de l'air en kg/m³. Elle nécessite le calcul préalable de la tempéra
 
 #### calculer_densites()
 Cette méthode fait appel à la méthode calculer_densite_air() pour remplir un tableau de densite de l'air.
+
 
 ## Sources 
 [1] Forward, R. L., Hoyt, R. P., & Uphoff, C. W. (2000). Terminator TetherTM: A spacecraft deorbit device. Journal of Spacecraft and Rockets, 37(2), 187-19.
