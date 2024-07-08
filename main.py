@@ -1,3 +1,22 @@
+"""
+Programme principal pour la simulation de la désorbitation d'un satellite à l'aide d'un frein magnétique.
+
+Ce programme permet de :
+1. Lire les paramètres de simulation depuis un fichier YAML.
+2. Demander à l'utilisateur de choisir une approche de calcul.
+3. Créer les objets nécessaires à la simulation (orbite, satellite, câble, matériaux).
+4. Calculer et afficher les résultats de la simulation.
+
+Modules utilisés:
+    - datetime: Pour manipuler les dates.
+    - frein_magnetique: Module customisé pour le freinage magnétique.
+    - frein_magnetique.LecteurYAML: Classe pour lire le fichier YAML.
+    - os: Pour manipuler les chemins de fichiers.
+
+Auteur: Raphaël Barral, Fabien Bertrand, Ténessy De Faria
+Date: 2024-07-08
+"""
+
 from datetime import datetime
 from frein_magnetique import *
 from frein_magnetique.LecteurYAML import LecteurYAML
