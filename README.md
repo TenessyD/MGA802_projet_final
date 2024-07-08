@@ -89,8 +89,8 @@ Cette méthode fait appel à la méthode calculer_densite_air() pour remplir un 
 
 
 ## Sources 
-[1] Forward, R. L., Hoyt, R. P., & Uphoff, C. W. (2000). Terminator TetherTM: A spacecraft deorbit device. Journal of Spacecraft and Rockets, 37(2), 187-19.
-[2] Alexander M. Jablonski; DRDC Ottawa TM 2008-097; Defence R&D Canada – Ottawa; June 2008. 
-[3] Victor U. J. Nwankwo, (2021), Atmospheric drag effects on modelled low Earth orbit (LEO) satellites during the July 2000 Bastille Day event in contrast to an interval of geomagnetically quiet condition.
-[4] Dépôt de Timothée Thomas : https://github.com/Timotraque/MGA802_projet
-[5] Dépôt de Thomas Martin : https://github.com/thomasorb/deorb/tree/main
+- [1] Forward, R. L., Hoyt, R. P., & Uphoff, C. W. (2000). Terminator TetherTM: A spacecraft deorbit device. Journal of Spacecraft and Rockets, 37(2), 187-19.
+- [2] Alexander M. Jablonski; DRDC Ottawa TM 2008-097; Defence R&D Canada – Ottawa; June 2008.
+- [3] Victor U. J. Nwankwo, (2021), Atmospheric drag effects on modelled low Earth orbit (LEO) satellites during the July 2000 Bastille Day event in contrast to an interval of geomagnetically quiet condition.
+- [4] Dépôt de Timothée Thomas : https://github.com/Timotraque/MGA802_projet
+- [5] Dépôt de Thomas Martin : https://github.com/thomasorb/deorb/tree/main
