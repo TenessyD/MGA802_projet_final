@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 class Orbite:
     """
+
     Classe représentant une orbite et permettant de calculer le temps de désorbitation d'un satellite.
 
     Attributs:
