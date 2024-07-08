@@ -26,8 +26,8 @@ et magnétique fidèle à la réalité. Enfin, il suffit d'indiquer dans la cons
 (énergétique ou basée sur le PFD).
 
 ## Documentation
-Toute la documentation nécessaire pour comprendre la structure des modules est disponible dans l'onglet `docs` de ce dépot GitHub.
-Vous pouvez y accéder en cliquant [ici](https://html-preview.github.io/?url=https://github.com/tenessy26/MGA802_projet_final/blob/main/build/html/index.html).
+Toute la documentation nécessaire pour comprendre la structure du module est disponible dans l'onglet `build` de ce dépot GitHub.
+Vous pouvez y accéder en ouvrant le fichier "index.html" dans votre navigateur se trouvant dans le dossier 'build/html'.
 
 ### Classes et méthodes clés :
 
