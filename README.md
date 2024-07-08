@@ -27,7 +27,7 @@ et magnétique fidèle à la réalité. Enfin, il suffit d'indiquer dans la cons
 
 ## Documentation
 Toute la documentation nécessaire pour comprendre la structure des modules est disponible dans l'onglet `docs` de ce dépot GitHub.
-Il suffit d'ouvrir le fichier `index.html` dans votre nagivateur, ce fichier ce trouve dans le dossier `build/html`.
+[Il suffit d'ouvrir le fichier `index.html` dans votre nagivateur, ce fichier ce trouve dans le dossier `build/html`](build/html/index.html).
 
 ### Classes et méthodes clés :
 
@@ -66,7 +66,7 @@ Les paramètres de la désorbitation sont spécifiés comme suit :
 - `satellite` : Instance de la classe `Satellite` représentant le satellite en orbite.
 - `atmosphere` : Instance de la classe `Atmosphere` représentant l'atmosphère terrestre.
 - `champ_mag` : Instance de la classe `ChampMagnetque` représentant un modèle du champ magnétque terrestre.
-- `approche` : Permet de spécifier l'approche souhaitée pour les calculs.
+- `approche` : Permet de spécifier l'approche souhaitée pour la réalisation des calculs ('pfd' ou 'energetique').
 
 ### Objet Atmosphere :
 L'objet "Atmosphere" est issu de la bibliothèque "Astraios" écrite par Timothée Thomas, il modélise l'atmosphère terrestre. 
