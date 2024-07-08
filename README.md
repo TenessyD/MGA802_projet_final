@@ -14,6 +14,7 @@ L'exécution du programme necessite l'installation des bibliothèques suivantes 
 - numpy
 - PyYAML
 - tqdm
+- setuptools
 
 Elles peuvent être installées automatiquement à l'aide de la commande :  
 ``pip install -r requirements.txt``
