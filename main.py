@@ -19,7 +19,6 @@ Date: 2024-07-08
 
 from datetime import datetime
 from frein_magnetique import *
-from frein_magnetique.LecteurYAML import LecteurYAML
 import os
 
 approche = None

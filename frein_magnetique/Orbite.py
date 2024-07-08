@@ -211,9 +211,9 @@ class Orbite:
         if donnees_sans_cable:
             filename = None
             if self.approche == 'energetique':
-                filename = 'data/donne_sans_cable_energie.csv'
+                filename = 'frein_magnetique/data/donne_sans_cable_energie.csv'
             elif self.approche == 'pfd':
-                filename = 'data/donne_sans_cable_PFD.csv'
+                filename = 'frein_magnetique/data/donne_sans_cable_PFD.csv'
             donne = np.genfromtxt(filename, delimiter=';')
             temps = donne[:, 0]
             rayon = donne[:, 1]
