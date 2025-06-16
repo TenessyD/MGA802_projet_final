@@ -1,4 +1,4 @@
-Projet : Modélisation de la durée de désorbitation d'un satellite en orbite basse équipé d'un frein électromagnétique.
+# Projet : Modélisation de la durée de désorbitation d'un satellite en orbite basse équipé d'un frein électromagnétique.
 
 Ce projet consiste à estimer le temps de désorbitation d'un satellite en orbite basse terrestre en tenant compte de l'effet des forces de traînée atmosphérique et électromagnétique. Le dispositif considéré pour permettre la génération d'une traînée électromagnétique exercée sur le satellite est décrit dans l'article [1].
 
