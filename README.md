@@ -1,11 +1,9 @@
-# Projet : Modélisation de la vitesse de désorbitation d'un satellite en LEO doté d'un frein électromagnétique.
+Projet : Modélisation de la durée de désorbitation d'un satellite en orbite basse équipé d'un frein électromagnétique.
 
-Ce projet a pour objectif d'estimer le temps de désorbitation d'un satellite en orbite basse terrestre en considérant les forces de traînée 
-atmosphérique et électromagnétique agissant sur le satellite. Le dispositif considéré pour bénéficier de la traînée électromagnétique est 
-décrit par l'article [1].
+Ce projet consiste à estimer le temps de désorbitation d'un satellite en orbite basse terrestre en tenant compte de l'effet des forces de traînée atmosphérique et électromagnétique. Le dispositif considéré pour permettre la génération d'une traînée électromagnétique exercée sur le satellite est décrit dans l'article [1].
 
 ## Dépendances 
-L'exécution du programme necessite l'installation des bibliothèques suivantes :
+L'exécution du programme nécessite l'installation des bibliothèques suivantes :
 - pandas
 - matplotlib
 - openpyxl
@@ -20,23 +18,19 @@ Elles peuvent être installées automatiquement à l'aide de la commande :
 ``pip install -r requirements.txt``
 
 ## Utilisation 
-Avant d'exécuter le programme à partir du fichier 'main.py', il est nécessaire d'entrer les paramètres de la simulation dans le 
-fichier 'data.yaml' en précisant les caractéristiques du satellite et de l'antenne électromagnétique (masse, longueur, cx, etc). 
+Avant d'exécuter le programme à partir du fichier 'main.py', il est nécessaire d'entrer les paramètres de simulation dans le 
+fichier 'data.yaml' en précisant les caractéristiques du satellite et de l'antenne électromagnétique considéré (masse, longueur, cx, etc). 
 Ensuite, l'utilisateur doit indiquer les paramètres de l'orbite initiale ainsi qu'une date pour bénéficier d'un modèle atmosphérique 
-et magnétique fidèle à la réalité. Enfin, il suffit d'indiquer dans la console l'approche souhaitée pour la réalisation des calculs 
-(énergétique ou basée sur le PFD).
+et magnétique fidèle à la réalité. Enfin, il suffit d'indiquer dans la console l'approche de calcul souhaitée (énergétique, basée sur le théorème de l’énergie mécanique, ou bien à partir du PFD).
 
 ## Documentation
 Toute la documentation nécessaire pour comprendre la structure du module est disponible dans l'onglet `build` de ce dépot GitHub.
-Vous pouvez y accéder en ouvrant le fichier "index.html" dans votre navigateur se trouvant dans le dossier 'build/html'.
+Vous pouvez y accéder en ouvrant le fichier "build/html/index.html" dans votre navigateur.
 
-### Classes et méthodes clés :
+### Structure du programme: Classes et méthodes
 
 #### Classe 'Satellite' :
-La classe "Satellite" représente un satellite en orbite autour d'une planète. Cet objet possède des attributs caractéristiques 
-d'un satellite, tels que sa masse en kg, son coefficient de traînée 'cx' (sans dimension) et sa surface transversale en mètres carrés. 
-Le coefficient de traînée est fixé par défaut à 2 si l'utilisateur ne dispose pas de cette donnée pour le satellite sur lequel il 
-souhaite effectuer des simulations.
+La classe "Satellite" regroupe les attributs caractéristiques de tous les satellites du module., notamment la masse (en kilogrammes), le coefficient de traînée Cx (sans dimension) et la surface transversale (en mètres carrés). Le coefficient de traînée est fixé par défaut à 2.
 
 #### Classe 'Cable' :
 La classe "Cable" est utilisée pour instancier un objet représentant le dispositif accroché au satellite pour bénéficier de la traînée électromagnétique,
